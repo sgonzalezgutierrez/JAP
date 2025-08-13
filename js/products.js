@@ -12,7 +12,7 @@ function mostrarProductos(dataArray) {
     `;
     for (let product of products) {
         htmlContentToAppend += `
-            <div class="list-group-item">
+            <div class="product-list-item">
                 <div class="row">
                     <div class="col-3">
                         <img src="${product.image}" alt="${product.name}" class="img-thumbnail">
