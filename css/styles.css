@@ -1,6 +1,16 @@
 .jumbotron,
 .card-body,
-.container,
+
+body{
+  background-color: #001E24;
+}
+
+.header-background{
+   background-color: #003F4B;
+}
+footer{
+   background-color: #003F4B;
+}
 .site-header {
   font-family: 'Verdana', serif !important;
 }
@@ -188,3 +198,4 @@ a.custom-card:hover {
 .checked {
   color: orange;
 }
+
