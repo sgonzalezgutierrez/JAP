@@ -8,9 +8,7 @@ body{
 .header-background{
    background-color: #003F4B;
 }
-footer{
-   background-color: #003F4B;
-}
+
 .site-header {
   font-family: 'Verdana', serif !important;
 }
@@ -21,6 +19,11 @@ footer{
 
 nav a {
   text-decoration: none;
+}
+
+li button{
+  background-color: transparent;
+  border: none;
 }
 
 .bd-placeholder-img {
@@ -80,6 +83,7 @@ nav a {
 footer {
   padding-top: 3rem;
   padding-bottom: 3rem;
+  background-color: #003F4B;
 }
 
 footer p {

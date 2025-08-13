@@ -39,3 +39,13 @@ let getJSONData = function(url){
         return result;
     });
 }
+
+if (localStorage.getItem('loggedIn') !== 'true') {
+  window.location.assign('login.html');
+}
+
+document.getElementById('logoutBtn').addEventListener('click', function () {
+  localStorage.removeItem('loggedIn');
+  localStorage.removeItem('username');
+  window.location.assign('login.html');
+});

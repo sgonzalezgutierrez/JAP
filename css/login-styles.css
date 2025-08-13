@@ -1,0 +1,164 @@
+/* --- RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container-login {
+    background-color: #012E36;
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- FONDO CON CÍRCULOS --- */
+
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+}
+
+.circle1 {
+    width: 250px;
+    height: 250px;
+    bottom: -80px;
+    left: -100px;
+    background-color: #03262c;
+}
+
+.circle2 {
+    width: 250px;
+    height: 250px;
+    bottom: -170px;
+    left: -20px;
+    background-color: #034F5E;
+}
+
+/* --- TARJETA DE LOGIN --- */
+.login-card {
+    background-color: #003F4B;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 12px;
+    width: 480px;
+    text-align: start;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+    border: 4px solid #29636E;
+}
+
+.logo img {
+    width: 160px;
+    margin-bottom: 20px;
+}
+
+.title {
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* --- INPUTS --- */
+.input-group {
+    background-color: #3C747E;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #82A3A9;
+
+}
+
+.input-group .icon {
+    color: #B0BEC5;
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+}
+
+input::placeholder {
+    color: rgb(212, 212, 212);
+}
+
+.input-group input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: none;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.input-group .icon-eye {
+    cursor: pointer;
+}
+
+/* --- BOTÓN --- */
+.btn {
+    background-color: #027084;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: rgb(4, 175, 184);
+     color: white;
+}
+
+/* --- ENLACES --- */
+.links {
+    margin-top: 15px;
+    font-size: 13px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.links a {
+    color: #73B7F6;
+    text-decoration: none;
+}
+.links p {
+    color: #D9D9D9;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 480px) {
+    .login-card {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .logo img {
+        width: 140px;
+    }
+
+    .circle {
+      display: none;
+    }
+
+
+}
