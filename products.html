@@ -40,6 +40,18 @@
   </nav>
   <main class="pb-5 container">
     <div id="productos-lista">
+      <div id="header">
+        <h1 id="titulo"></h1>
+        <div class="filtros">
+          <h4 class="filtroTitulo">Ordenar por</h4>
+          <select name="miCombobox" id="miCombobox">
+            <option value="desc">Menor precio</option>
+            <option value="asc">Mayor precio</option>
+            <option value="sell">Más vendidos</option>
+          </select>
+        </div>
+      </div>
+      <div id="list"></div>
     </div>
   </main>
   <footer class="text-muted">

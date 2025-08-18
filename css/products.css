@@ -42,3 +42,29 @@ h1{
   margin-top: auto;    
   align-self: flex-end; 
 }
+
+.filtros{
+    display: flex;
+    justify-content: flex-end;    
+    align-self: flex-end; 
+    color: #B0BEC5;
+    margin-right: 10%; 
+    appearance: none;
+     background-color: none;
+      text-decoration: none;
+      -webkit-appearance: none;
+      
+}
+#miCombobox{
+  background-color: #00303A;
+  color: #B0BEC5;;
+  border: none;
+  margin-left: 0.1rem;
+  font-family: 'Verdana', serif !important;
+}
+
+.filtroTitulo{
+    font-size: 1rem;
+    margin: 0 0;
+}
+
