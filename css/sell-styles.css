@@ -1,0 +1,95 @@
+body, h1, h2, h3, p, ul, li, form, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #001E24;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #003f4b; 
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgb(255, 255, 255);
+    padding: 32px 24px;
+}
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #ffffff;
+}
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #82a3a9;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #3c747e;
+    color: #ffffff;
+    transition: border 0.2s;
+
+}
+#file-upload{
+    background:#3c747e !important;
+    border: 1px solid #82a3a9 !important;
+}
+textarea{
+    background:#3c747e !important;
+    border: 1px solid #82a3a9 !important;
+}
+select{
+    background: #3c747e !important;
+    border: 1px solid #82a3a9 !important;
+    color: #ffffff !important;
+}
+
+.list-group-item {
+    background: #3c747e !important;
+    border: 1px solid #82a3a9 !important;
+    color: #ffffff !important;
+}
+
+.text-muted {
+    color: #ccd7dc !important;
+}
+
+button[type="submit"] {
+    background: #f5a001;
+    color: #ffffff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 20px;
+}
+
+button[type="submit"]:hover {
+    background: #d98d00;
+}
+
