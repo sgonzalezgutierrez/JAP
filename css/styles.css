@@ -105,10 +105,6 @@ footer p {
   background: white;
 }
 
-.img-fit {
-  max-height: 100%;
-}
-
 .alert {
   position: fixed;
   top: 80px;
