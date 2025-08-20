@@ -11,8 +11,8 @@ body {
     min-height: 100vh;
 }
 
-.container {
-    max-width: 600px;
+.container_datos {
+    max-width: 1000px;
     margin: 40px auto;
     background: #003f4b; 
     border-radius: 8px;
@@ -52,6 +52,20 @@ select {
     transition: border 0.2s;
 
 }
+
+
+select {
+  background-color: #3c747e !important; 
+  color: #B0BEC5 !important;
+  border: none !important;
+  font-family: 'Verdana', serif !important;
+  padding: 0.5rem 0.8rem;
+  
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 #file-upload{
     background:#3c747e !important;
     border: 1px solid #82a3a9 !important;
@@ -59,11 +73,6 @@ select {
 textarea{
     background:#3c747e !important;
     border: 1px solid #82a3a9 !important;
-}
-select{
-    background: #3c747e !important;
-    border: 1px solid #82a3a9 !important;
-    color: #ffffff !important;
 }
 
 .list-group-item {
@@ -92,4 +101,5 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background: #d98d00;
 }
+
 
