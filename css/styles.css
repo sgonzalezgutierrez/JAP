@@ -199,3 +199,13 @@ a.custom-card:hover {
   color: orange;
 }
 
+.dropdown-menu {
+  background-color: #00303A !important;
+}
+.dropdown-item:hover {
+   background-color: #42666D !important; 
+   color: #f0f8ff !important;
+}
+.dropdown-item {
+   color: #f0f8ff !important;
+}
