@@ -25,7 +25,7 @@ function mostrarProductos(dataArray) {
     let products = dataArray.products;
     for (let product of products) {
         htmlContentToAppend += `
-            <div class="product-list-item">
+            <div class="product-list-item" onclick="seleccionarProducto(${product.id})" style="cursor:pointer;">
                 <div class="row">
                     <div class="col-3">
                         <img src="${product.image}" alt="${product.name}" class="img-thumbnail">
@@ -44,6 +44,11 @@ function mostrarProductos(dataArray) {
     }
 
     document.getElementById("list").innerHTML = htmlContentToAppend;
+}
+
+function seleccionarProducto(idProducto) {
+    localStorage.setItem("productoSeleccionado", idProducto);
+    window.location.href = "product-info.html";
 }
 
 
