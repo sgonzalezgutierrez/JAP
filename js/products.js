@@ -1,4 +1,7 @@
-const productos_url = 'https://japceibal.github.io/emercado-api/cats_products/101.json'
+let catID = localStorage.getItem('catID');
+let productos_url = `https://japceibal.github.io/emercado-api/cats_products/${catID}.json`;
+//Obtiene el CatID que guarda Category, y lo uso en url para que sea dinamico y cambie dependiendo del producto
+
 let currentProductsArray = [];
 
 function sortProductsDesc(dataArray){
