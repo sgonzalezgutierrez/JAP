@@ -61,7 +61,7 @@ function mostrarProductos(dataArray) {
     let products = dataArray.products;
     for (let product of products) {
         htmlContentToAppend += `
-            <div class="product-list-item" onclick="seleccionarProducto(${product.id})" style="cursor:pointer;">
+            <div class="product-list-item" data-id="${product.id}" style="cursor:pointer;">
                 <div class="row">
                     <div class="col-3">
                         <img src="${product.image}" alt="${product.name}" class="img-thumbnail">
@@ -112,9 +112,18 @@ document.getElementById("miCombobox").addEventListener("change",function(event){
         }else{
            sortProductsSell(currentProductsArray); 
         }
-        let arrayToShow = filterProductsByPrice(currentProductsArray);
+  let arrayToShow = filterProductsByPrice(currentProductsArray);
         mostrarProductos(arrayToShow);
-    })  
+    }) 
+
+document.getElementById("list").addEventListener("click", function(e){
+    const value = e.target.closest(".product-list-item")
+        if(value){
+            let productId = value.dataset.id;
+            seleccionarProducto(productId);
+        }  
+    });
+
 //Nico explica esto
 document.getElementById("search").addEventListener("input",function(e){
     let valueObt = e.target.value;
