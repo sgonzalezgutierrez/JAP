@@ -43,7 +43,7 @@ h1{
   align-self: flex-end; 
 }
 
-.filtros{
+.filtros {
     display: flex;
     justify-content: flex-end;    
     align-self: flex-end; 
@@ -52,11 +52,12 @@ h1{
     appearance: none;
      background-color: none;
       text-decoration: none;
-      -webkit-appearance: none;
-      
+      -webkit-appearance: none;      
 }
+
 #miCombobox{
   background-color: #00303A;
+  margin-bottom: 1.5rem;
   color: #B0BEC5;;
   border: none;
   margin-left: 0.1rem;
@@ -79,4 +80,31 @@ h1{
       width: 100%;
       margin-bottom: 1rem;
     }
+
+}
+
+
+#minPrice, #maxPrice, #search{
+  color: #003F4B;
+  background-color: #a4c4ca;
+  width: 100px;      /* ancho fijo para que no se estiren */
+  margin-left: 0; /* empuja los inputs hacia la derecha */
+  display: block;    /* asegura que respete margin-left */
+  }
+
+  #btnFilter {
+    background-color: #003f4b !important;
+    border-color: #003f4b !important;
+    color: #f0f8ff !important;
+    padding: 6px 12px !important;
+    cursor: pointer !important;
+}
+
+#btnClear {
+    color: #f0f8ff !important;
+    padding: 6px 12px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s;
 }
