@@ -48,7 +48,7 @@ h1{
     justify-content: flex-end;    
     align-self: flex-end; 
     color: #B0BEC5;
-    margin-right: 10%; 
+    margin-right: 32px; 
     appearance: none;
      background-color: none;
       text-decoration: none;
@@ -98,7 +98,7 @@ h1{
     color: #f0f8ff !important;
     padding: 6px 12px !important;
     cursor: pointer !important;
-}
+  }
 
 #btnClear {
     color: #f0f8ff !important;
@@ -107,4 +107,30 @@ h1{
     background: none;
     border: none;
     transition: color 0.2s;
+}
+.content-filter{
+  display: flex;
+  align-items: end;
+  width: 100%;
+  justify-content: end;
+  gap: 0px 20px;
+  padding: 0px 32px ;
+}
+
+.content-search{
+  display: flex;
+  gap: 0px 10px;
+}
+
+.search-filter{
+  width: 150px !important;
+}
+
+#btnFilter{
+  border-radius: 4px !important;
+}
+
+#btnFilter:hover, #btnFilter:focus {
+  background-color: #a4c4ca !important;
+  color: #003F4B !important;
 }
