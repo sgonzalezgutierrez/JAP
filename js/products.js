@@ -5,8 +5,8 @@ let productos_url = `https://japceibal.github.io/emercado-api/cats_products/${ca
 let currentProductsArray = [];
 
 // Funciones de filtro
-// hay un error al cambiar el filtro si tenemos search boton filtrar no hace nada
 
+// Filtra de forma descendiente
 function sortProductsDesc(dataArray){
     dataArray.products.sort((a,b) => a.cost - b.cost)
 }
@@ -15,11 +15,12 @@ function sortProductsDesc(dataArray){
 function sortProductsAsc(dataArray){
     dataArray.products.sort((a,b) => b.cost - a.cost)
 }
+//Filtra por la cantidad vendida
 function sortProductsSell(dataArray){
     dataArray.products.sort((a,b) => b.soldCount - a.soldCount)
 }
 
-// Y este se usa para filtrar la lista de productos.
+//Filtra segun el precio que se coloco en los filtros, revisando si tiene valores
 function filterProductsByPrice(dataArray) {
     const min = parseInt(document.getElementById("minPrice").value) || 0;
     const max = parseInt(document.getElementById("maxPrice").value) || Infinity;
@@ -32,6 +33,7 @@ function filterProductsByPrice(dataArray) {
     return filteredArray;
 }
 
+// Filtra segun el titulo y descripcion
 function filterProductsByTitleandDescription(str){
       const search = str.trim().toLowerCase();
 
@@ -58,7 +60,8 @@ function showTitle(title){
       document.getElementById("titulo").innerHTML = htmlContentToAppend;
 }
 
-function mostrarProductos(dataArray) {
+//Genera lo que se va a agregar en el html con uso del dom
+function showProducts(dataArray) {
     let htmlContentToAppend = "";
     let products = dataArray.products;
     for (let product of products) {
@@ -84,6 +87,7 @@ function mostrarProductos(dataArray) {
     document.getElementById("list").innerHTML = htmlContentToAppend;
 }
 
+//Guarda en el local storage el id de producto y re dirige a product info
 function selectProduct(idProducto) {
     localStorage.setItem("productoSeleccionado", idProducto);
     window.location.href = "product-info.html";
@@ -99,13 +103,13 @@ document.addEventListener("DOMContentLoaded", function(e){
         showTitle(resultObj.data.catName)
         sortProductsDesc(currentProductsArray); 
         let arrayToShow = filterProductsByPrice(currentProductsArray);
-        mostrarProductos(arrayToShow)
+        showProducts(arrayToShow)
         }
     });
   
 })
 
-// Este codigo sirve para poder filtrar los productos correctamente segun los parametros dados.
+// Filtra los productos correctamente segun la opcion seleccionada en el combobox
 document.getElementById("miCombobox").addEventListener("change",function(event){
         let valorSeleccionado = event.target.value;    
         if(valorSeleccionado === "desc"){
@@ -116,14 +120,15 @@ document.getElementById("miCombobox").addEventListener("change",function(event){
            sortProductsSell(currentProductsArray); 
         }
   let arrayToShow = filterProductsByPrice(currentProductsArray);
-        mostrarProductos(arrayToShow);
+        showProducts(arrayToShow);
     }) 
 
+// Listener por si se hace click en un elemento en una lista.  
 document.getElementById("list").addEventListener("click", function(e){
     const value = e.target.closest(".product-list-item")
         if(value){
             let productId = value.dataset.id;
-            seleccionarProducto(productId);
+            selectProduct(productId);
         }  
     });
 
@@ -132,18 +137,20 @@ document.getElementById("search").addEventListener("input",function(e){
     let valueObt = e.target.value;
     let arrayFiltered = filterProductsByTitleandDescription(valueObt);
     let arrayToShow = filterProductsByPrice(arrayFiltered);
-    mostrarProductos(arrayToShow);
+    showProducts(arrayToShow);
 });
 
+// Listener 
 document.getElementById("btnFilter").addEventListener("click", e => { 
     let arrayFiltered = filterProductsByTitleandDescription(document.getElementById("search").value);
     let arrayToShow = filterProductsByPrice(arrayFiltered);
-    mostrarProductos(arrayToShow);
+    showProducts(arrayToShow);
 });
 
+// Listener para cuando se hace click en clear queda la lista como al principo
 document.getElementById("btnClear").addEventListener("click", e => {
     document.getElementById("minPrice").value = "";
     document.getElementById("maxPrice").value = "";
     document.getElementById("search").value = "";
-    mostrarProductos(currentProductsArray);
+    showProducts(currentProductsArray);
 })
