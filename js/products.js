@@ -10,14 +10,16 @@ let currentProductsArray = [];
 function sortProductsDesc(dataArray){
     dataArray.products.sort((a,b) => a.cost - b.cost)
 }
-// Nico comentar aca
+
+// Este codigp se usa para acortar la lista de prodcutos.
 function sortProductsAsc(dataArray){
     dataArray.products.sort((a,b) => b.cost - a.cost)
 }
 function sortProductsSell(dataArray){
     dataArray.products.sort((a,b) => b.soldCount - a.soldCount)
 }
-//Nico comentar aca
+
+// Y este se usa para filtrar la lista de productos.
 function filterProductsByPrice(dataArray) {
     const min = parseInt(document.getElementById("minPrice").value) || 0;
     const max = parseInt(document.getElementById("maxPrice").value) || Infinity;
@@ -45,8 +47,8 @@ function filterProductsByTitleandDescription(str){
   };
 }
 
-// Creando la lista por DOM
-//Nico comentar aca
+// Creando la lista por DOM.
+// Muestra el titulo de los objetos en la lista.
 function showTitle(title){
     let htmlContentToAppend = `
          <div class="titulo">
@@ -102,7 +104,8 @@ document.addEventListener("DOMContentLoaded", function(e){
     });
   
 })
-//Nico comentar esto, las funciones explica solo la que te marque
+
+// Este codigo sirve para poder filtrar los productos correctamente segun los parametros dados.
 document.getElementById("miCombobox").addEventListener("change",function(event){
         let valorSeleccionado = event.target.value;    
         if(valorSeleccionado === "desc"){
@@ -124,7 +127,7 @@ document.getElementById("list").addEventListener("click", function(e){
         }  
     });
 
-//Nico explica esto
+// Esta pieza de codigo cumple la funcion de permitir editar y agregar elementos a la lsita de productos.
 document.getElementById("search").addEventListener("input",function(e){
     let valueObt = e.target.value;
     let arrayFiltered = filterProductsByTitleandDescription(valueObt);
