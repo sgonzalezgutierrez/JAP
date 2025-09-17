@@ -1,3 +1,4 @@
+// Esta función valida el login: si el usuario y la contraseña no están vacíos, guarda el estado en localStorage y redirige a index.html
 document
   .getElementById('loginForm')
   .addEventListener('submit', function (event) {
