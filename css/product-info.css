@@ -1,3 +1,4 @@
+/* Estilos para el cuadro general que contiene a los demás elementos en su interior*/
 .product-info-container {
     background-color: #00303A !important;
     border-radius: 10px;
@@ -11,6 +12,7 @@
     flex-direction: column;
 }
 
+/* Aquí está contenido el estilo de tanto el título del producto, como de la cantidad vendida y el precio de forma tal que queden a la misma altura en el container general*/
 .info-producto {
     background-color: #00303A;
     color: #f0f8ff;
@@ -22,6 +24,7 @@
     gap: 0px 22px;
 }
 
+/*Este cuadro aparte funciona para lograr que la cantidad de productos vendidos y su precio queden de acuerdo al Figma dentro de un recuadro independiente*/
 .precio-vendidos {
     display: flex;
     width: 50%;
@@ -32,6 +35,7 @@
     padding: 10px; 
 }
 
+/* La galería en sus diferentes clases permiten, entre otras cosas, que las imagenes se encuentren por debajo de la palabra "Galería", que tenga la animación al paar por arriba de cada image, y que éstas estén alineadas*/
 .galeria-imagenes {
     display:list-item;
     flex-wrap:wrap;
@@ -60,6 +64,7 @@
     box-shadow: 0 0 8px #a4c4ca;
 }
 
+/*En el título lo principal fue lograr que quede centrado dentro del info-producto y no centrado respecto al container principal*/
 h4 {
     color: #f0f8ff;
     font-size: 35px;
@@ -112,7 +117,7 @@ h4 {
 }
 
 .float-end a:hover,
-.float-end a:focus {
+.float-end a:focus {  /*esto permite qe al pasar el mouse por encima del link, cambie de color*/
     color: #e8f3f5;
     background: none;
 }
@@ -128,7 +133,7 @@ a[target="_blank"] {
     display: inline-block;
 }
 
-a[target="_blank"]:hover,
+a[target="_blank"]:hover,  /*los atributos con target="_blank" o si tienen la clase .text-muted cambian de color al pasar por arriba con el mouse cambien de color*/
 a[target="_blank"]:focus,
 a[target="_blank"].text-muted:hover,
 a[target="_blank"].text-muted:focus {
