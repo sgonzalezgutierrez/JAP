@@ -1,15 +1,15 @@
-const idSeleccionado = localStorage.getItem("productoSeleccionado");
-const url = `https://japceibal.github.io/emercado-api/products/${idSeleccionado}.json`;
-fetch(url)
-    .then(response => response.json())
+const idSeleccionado = localStorage.getItem("productoSeleccionado"); //obtengo el id del producto seleccionado de localStorage
+const url = `https://japceibal.github.io/emercado-api/products/${idSeleccionado}.json`;//Construye la URL de la API usando el ID del producto seleccionado
+fetch(url) //Realiza la petición a la API para obtener los datos del producto
+    .then(response => response.json()) //Convierte la respuesta en un objeto JSON
     .then(data => {
         document.querySelector("h4").textContent = data.name;
         document.querySelector(".precio").textContent = `Precio: ${data.currency} ${data.cost}`;
         document.querySelector(".vendidos").textContent = `Cantidad vendida: ${data.soldCount}`;
         document.querySelector(".descripción-info").textContent = data.description;
-        const galeria = document.querySelector(".galeria-imagenes");
-        galeria.innerHTML = '<p class="galeria">Galería</p>';
-        data.images.forEach(image => {
+        const galeria = document.querySelector(".galeria-imagenes");//selecciono el div donde van las imagenes
+        galeria.innerHTML = '<p class="galeria">Galería</p>'; //agrego el titulo galeria
+        data.images.forEach(image => { //recorro el array de imagenes
             galeria.innerHTML += `<img class="img-thumbnail mx-2" src="${image}" alt="Imagen del producto">`;
         }); //el + va agregando imagenenes y no las borra.
     }
