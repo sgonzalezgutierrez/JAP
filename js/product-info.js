@@ -12,5 +12,25 @@ fetch(url) //Realiza la petición a la API para obtener los datos del producto
         data.images.forEach(image => { //recorro el array de imagenes
             galeria.innerHTML += `<img class="img-thumbnail mx-2" src="${image}" alt="Imagen del producto">`;
         }); //el + va agregando imagenenes y no las borra.
+
+        const relatedProductsContainer = document.querySelector(".content-related-products");
+        relatedProductsContainer.innerHTML = `
+        <div class="title-related-products">Productos relacionados</div>
+        <div class="products-wrapper"></div>
+        `;
+        const wrapper = relatedProductsContainer.querySelector(".products-wrapper");
+        data.relatedProducts.forEach(product => {
+        wrapper.innerHTML += `
+            <div class="product-item d-flex flex-column align-items-center pt-3" onclick="selectRelatedProduct(${product.id})"">
+                <img src="${product.image}" alt="Imagen del producto">
+                <p class="name-related-product mt-2">${product.name}</p>
+            </div>
+        `;
+        });
     }
     );
+
+    function selectRelatedProduct(id) {
+        localStorage.setItem("productoSeleccionado", id); // guarda ID
+        window.location.reload(); // recarga la página
+    };
