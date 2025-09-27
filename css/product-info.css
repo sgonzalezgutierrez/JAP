@@ -195,3 +195,47 @@ a[target="_blank"].text-muted:focus {
     color: #f0f8ff;
     font-weight: 500; 
 }
+
+textarea{
+    background:#3c747e !important;
+    border: 1px solid #82a3a9 !important;
+}
+
+textarea::placeholder {
+  color: white !important;   
+  opacity: 1;    
+}
+
+.stars {
+      font-size: 30px;
+      color: orange;
+    }
+    .star {
+      cursor: pointer;
+    }
+    .star.inactive {
+      color: gray;
+    }
+
+.btn-group .btn-light {
+    color: #f0f8ff !important;
+    background-color: #027084 !important;
+    border: 1px solid #027084 !important;
+    padding: 6px 12px !important;
+    cursor: pointer !important;
+    border-radius: 4px;
+}
+
+.btn-group .btn-light:hover,
+.btn-group .btn-light:focus,
+.btn-group .btn-light.active {
+    background-color: #a4c4ca !important;
+    color: #003F4B !important;
+}
+
+.btn-group .btn-light:hover,
+.btn-group .btn-light:focus,
+.btn-group .btn-light.active {
+    background-color: #a4c4ca !important;
+    color: #003F4B !important;
+}
