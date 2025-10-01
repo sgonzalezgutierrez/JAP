@@ -37,15 +37,21 @@
 
 /* La galería en sus diferentes clases permiten, entre otras cosas, que las imagenes se encuentren por debajo de la palabra "Galería", que tenga la animación al paar por arriba de cada image, y que éstas estén alineadas*/
 .galeria-imagenes {
-    display:list-item;
-    flex-wrap:wrap;
-    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+     gap:12px;
+    justify-content: start;
+}
+
+.content-galery {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
     background: #003F4B;
     margin-top: 0px !important;
     border: 2px solid #29636E;
     border-radius: 10px;  
-    padding: 20px;
+    padding: 20px; 
 }
 
 .galeria-imagenes img {
@@ -56,8 +62,6 @@
     border: 2px solid #a4c4ca;
     background: #fff;
     transition: box-shadow 0.2s;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
 }
 
 .galeria-imagenes img:hover {
@@ -174,6 +178,7 @@ a[target="_blank"].text-muted:focus {
     display: flex;
     flex-wrap: wrap; 
     gap: 0px 12px;
+    justify-content: start;
 }
 
 .product-item {
@@ -238,4 +243,32 @@ textarea::placeholder {
 .btn-group .btn-light.active {
     background-color: #a4c4ca !important;
     color: #003F4B !important;
+}
+
+@media (max-width: 1200px) {
+    .product-info-container {
+        margin: 0px;
+        padding: 22px;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .precio-vendidos {
+        display: flex;
+        flex-direction: column;
+        font-size: medium;
+    }
+
+    h4{
+        font-size: 25px !important;
+    }
+
+    .galeria-imagenes{
+        justify-content: center;
+    }
+    
+    .products-wrapper{
+        justify-content: center; 
+    }
 }

@@ -8,9 +8,8 @@ fetch(url) //Realiza la petición a la API para obtener los datos del producto
         document.querySelector(".vendidos").textContent = `Cantidad vendida: ${data.soldCount}`;
         document.querySelector(".descripción-info").textContent = data.description;
         const galeria = document.querySelector(".galeria-imagenes");//selecciono el div donde van las imagenes
-        galeria.innerHTML = '<p class="galeria">Galería</p>'; //agrego el titulo galeria
         data.images.forEach(image => { //recorro el array de imagenes
-            galeria.innerHTML += `<img class="img-thumbnail mx-2" src="${image}" alt="Imagen del producto">`;
+            galeria.innerHTML += `<img src="${image}" alt="Imagen del producto">`;
         }); //el + va agregando imagenenes y no las borra.
 
         const relatedProductsContainer = document.querySelector(".content-related-products");
