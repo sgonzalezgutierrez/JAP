@@ -174,11 +174,33 @@ a[target="_blank"].text-muted:focus {
     transition: box-shadow 0.2s;
 }
 
+.content-comments {
+    background: #003F4B;
+    margin-top: 0px !important;
+    border: 2px solid #29636E;
+    border-radius: 10px;  
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column; 
+}
+
 .products-wrapper {
     display: flex;
     flex-wrap: wrap; 
     gap: 0px 12px;
     justify-content: start;
+}
+
+.comments-wrapper {
+    display: flex; 
+    gap: 0px 12px;
+    justify-content: start;
+    flex-direction: column;
+}
+
+.text-custom-grey {
+    color: #9a9a9a;
 }
 
 .product-item {
