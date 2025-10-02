@@ -182,7 +182,28 @@ a[target="_blank"].text-muted:focus {
     padding: 20px;
     height: 100%;
     display: flex;
+    gap:20px;
+}
+
+.product-reviews{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.featured-reviews {
+    display: flex;
     flex-direction: column; 
+    height: 100%;
+    width: 70%;
+}
+
+.user-comment{
+    color:white;
+    font-size: medium;
+    font-weight: 500;
+    margin-bottom: 0px !important;
 }
 
 .products-wrapper {
@@ -194,9 +215,10 @@ a[target="_blank"].text-muted:focus {
 
 .comments-wrapper {
     display: flex; 
-    gap: 0px 12px;
+    gap: 0px 30px;
     justify-content: start;
     flex-direction: column;
+    margin-bottom: 10px;
 }
 
 .text-custom-grey {
@@ -236,6 +258,7 @@ textarea::placeholder {
 .stars {
       font-size: 30px;
       color: orange;
+      line-height: 30px
     }
     .star {
       cursor: pointer;
@@ -273,7 +296,36 @@ textarea::placeholder {
         padding: 22px;
         gap: 30px;
     }
-}
+
+    .content-comments {
+        width: 100%;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .product-reviews{
+        width: 100%;
+    }
+    .featured-reviews{
+       width: 100%;
+    }
+
+    .stars {
+        font-size: 20px;
+        color: orange;
+        width: 100%;
+        white-space: nowrap
+        }
+
+        .star {
+            cursor: pointer;
+        }
+
+        .star.inactive {
+            color: gray;
+            font-size: 20px;
+        }
+    }
 
 @media (max-width: 768px) {
     .precio-vendidos {
@@ -293,4 +345,21 @@ textarea::placeholder {
     .products-wrapper{
         justify-content: center; 
     }
+}
+
+.icon-comment{
+    width: 32px;
+    height: 32px;
+}
+
+.star {
+    cursor: pointer;
+    font-size: 30px;
+    color: gray;
+}
+.star.active {
+    color: orange;
+}
+.star.inactive {
+    color: gray;
 }

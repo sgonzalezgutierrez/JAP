@@ -134,3 +134,20 @@ h1{
   background-color: #a4c4ca !important;
   color: #003F4B !important;
 }
+
+@media (max-width: 768px) {
+  .search-filter{
+    width: 100% !important;
+  }
+
+  .form-control{
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .content-filter{
+    gap: 10px !important;
+    flex-wrap: wrap;
+  }
+}
