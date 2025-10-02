@@ -1,102 +1,177 @@
-const idSeleccionado = localStorage.getItem("productoSeleccionado"); //obtengo el id del producto seleccionado de localStorage
-const url = `https://japceibal.github.io/emercado-api/products/${idSeleccionado}.json`; //Construye la URL de la API usando el ID del producto seleccionado
-const urlCom = `https://japceibal.github.io/emercado-api/products_comments/${idSeleccionado}.json`; //constante para conseguir los comentarios de una ID de prodcuto especifico
+// ==================== PRODUCT DATA ====================
+const selectedProductId = localStorage.getItem("productoSeleccionado");
+const productUrl = `https://japceibal.github.io/emercado-api/products/${selectedProductId}.json`;
+const commentsUrl = `https://japceibal.github.io/emercado-api/products_comments/${selectedProductId}.json`;
 
-fetch(url) //Realiza la petición a la API para obtener los datos del producto
-  .then((response) => response.json()) //Convierte la respuesta en un objeto JSON
-  .then((data) => {
-    document.querySelector("h4").textContent = data.name;
-    document.querySelector(
-      ".precio"
-    ).textContent = `Precio: ${data.currency} ${data.cost}`;
-    document.querySelector(
-      ".vendidos"
-    ).textContent = `Cantidad vendida: ${data.soldCount}`;
-    document.querySelector(".descripción-info").textContent = data.description;
-    const galeria = document.querySelector(".galeria-imagenes"); //selecciono el div donde van las imagenes
-    data.images.forEach((image) => {
-      //recorro el array de imagenes
-      galeria.innerHTML += `<img src="${image}" alt="Imagen del producto">`;
-    }); //el + va agregando imagenenes y no las borra.
+// ==================== FETCH PRODUCT ====================
+fetch(productUrl)
+  .then(res => res.json())
+  .then(product => {
+    document.querySelector("h4").textContent = product.name;
+    document.querySelector(".precio").textContent = `Precio: ${product.currency} ${product.cost}`;
+    document.querySelector(".vendidos").textContent = `Cantidad vendida: ${product.soldCount}`;
+    document.querySelector(".descripción-info").textContent = product.description;
 
-    const relatedProductsContainer = document.querySelector(
-      ".content-related-products"
-    );
-    relatedProductsContainer.innerHTML = `
-        <div class="title-related-products">Productos relacionados</div>
-        <div class="products-wrapper"></div>
-        `;
-    const wrapper = relatedProductsContainer.querySelector(".products-wrapper");
-    data.relatedProducts.forEach((product) => {
+    const gallery = document.querySelector(".galeria-imagenes");
+    product.images.forEach(img => gallery.innerHTML += `<img src="${img}" alt="Imagen del producto">`);
+
+    const relatedContainer = document.querySelector(".content-related-products");
+    relatedContainer.innerHTML = `
+      <div class="title-related-products">Productos relacionados</div>
+      <div class="products-wrapper"></div>
+    `;
+    const wrapper = relatedContainer.querySelector(".products-wrapper");
+    product.relatedProducts.forEach(p => {
       wrapper.innerHTML += `
-            <div class="product-item d-flex flex-column align-items-center pt-3" onclick="selectRelatedProduct(${product.id})"">
-                <img src="${product.image}" alt="Imagen del producto">
-                <p class="name-related-product mt-2">${product.name}</p>
-            </div>
-        `;
-    });
-  });
-
-fetch(urlCom) //Realiza la petición a la API para obtener los comentarios del producto
-  .then((response) => response.json())
-  .then((data) => {
-    const coments = document.querySelector(".content-comments");
-    const commentsContainer = document.getElementById("comments-container");
-    if(data.length > 0){
-        const average = document.getElementById("average-note");
-        const calif = data.map(item => item.score);
-        const aver = averageNotes(calif);
-        average.innerHTML +=`
-            <div >
-                ${Math.trunc(aver)}
-                <div class="stars" id="stars-a"></div>
-            </div>
-            `
-        renderStars(`stars-a`, Math.trunc(aver));
-    }else{
-        coments.innerHTML = `
-            <p class="text-white fw-bold fs-4">Sin comentarios</p>
-        `
-    }
-    data.forEach((com, index) => {
-      const div = document.createElement("div");
-      div.classList.add("comments-wrapper", "mb-3"); // margen entre comentarios
-      div.innerHTML = `
-        <div class="d-flex gap-2 align-items-center w-100 justify-content-between">
-            <div class="d-flex gap-2 align-items-center">
-                <h4 class="text-white fw-bold fs-6">${com.user}</h4>
-                <div class="text-custom-grey">${com.dateTime}</div>
-            </div>
-            <div class="stars" id="stars-${index}"></div>
+        <div class="product-item d-flex flex-column align-items-center pt-3" onclick="selectRelatedProduct(${p.id})">
+          <img src="${p.image}" alt="Imagen del producto">
+          <p class="name-related-product mt-2">${p.name}</p>
         </div>
-        <div class="text-white">${com.description}</div>
-        `;
-      commentsContainer.appendChild(div);
-      renderStars(`stars-${index}`, com.score);
+      `;
     });
   });
 
+// ==================== FETCH COMMENTS ====================
+let allRatings = []; // guardará todas las calificaciones reales
+const commentsContainer = document.querySelector(".featured-reviews .comments-wrapper");
+const averageContainer = document.getElementById("average-note");
+
+fetch(commentsUrl)
+  .then(res => res.json())
+  .then(data => {
+    if(data.length) {
+      allRatings = data.map(c => c.score);
+      updateAverageRating();
+    } else {
+      averageContainer.innerHTML = `<p class="text-white fw-bold fs-5">Sin comentarios</p>`;
+    }
+
+    data.forEach(c => {
+      const date = new Date(c.dateTime).toLocaleDateString("es-ES");
+      const commentDiv = document.createElement("div");
+      commentDiv.classList.add("comments-wrapper");
+      commentDiv.innerHTML = `
+        <div class="d-flex gap-2 align-items-center w-100 justify-content-between flex-wrap flex-md-nowrap">
+          <div class="d-flex gap-2 align-items-center">
+            <img class="icon-comment" src="./assets/icon-comment.png" alt="person"/>
+            <p class="user-comment">${c.user}</p>
+            <div class="text-custom-grey">${date}</div>
+          </div>
+          <div class="stars">${createStars(c.score)}</div>
+        </div>
+        <div class="text-white fw-smoll">${c.description}</div>
+      `;
+      commentsContainer.appendChild(commentDiv);
+    });
+  });
+
+// ==================== HELPER FUNCTIONS ====================
 function selectRelatedProduct(id) {
-  localStorage.setItem("productoSeleccionado", id); // guarda ID
-  window.location.reload(); // recarga la página
+  localStorage.setItem("productoSeleccionado", id);
+  window.location.reload();
 }
 
-function renderStars(containerOrId, rating, maxStars = 5) {
-  const container =
-    typeof containerOrId === "string"
-      ? document.getElementById(containerOrId)
-      : containerOrId;
+function createStars(score) {
+  let stars = "";
+  for(let i = 1; i <= 5; i++) {
+    stars += i <= score ? "★ " : '<span class="star inactive">★</span> ';
+  }
+  return stars.trim();
+}
 
-  if (!container) return; // no existe -> salir
+function updateStarsVisual(score) {
+  stars.forEach(star => {
+    const value = parseInt(star.dataset.value);
+    if(value <= score) {
+      star.classList.remove("inactive");
+      star.classList.add("active");
+    } else {
+      star.classList.remove("active");
+      star.classList.add("inactive");
+    }
+  });
+}
+
+function calculateAverage(scores) {
+  if(!scores.length) return 0;
+  const sum = scores.reduce((a,b) => a+b,0);
+  return Math.round(sum / scores.length);
+}
+
+function updateAverageRating() {
+  const avg = calculateAverage(allRatings); // promedio entero
+  const total = allRatings.length; // cantidad de calificaciones
+
+  averageContainer.innerHTML = `
+    <div class="d-flex align-items-start gap-3">
+  
+        <span class="fw-bold fs-4">${avg}</span>
+            <div class="d-flex align-items-start flex-column">
+        <div class="stars" id="stars-average"></div>
+      
+      <span class="fw-medium fs-6 text-white">${total} calificaciones</span>
+      </div>
+    </div>
+  `;
+  renderStars(document.getElementById("stars-average"), avg);
+}
+
+function renderStars(container, rating) {
+  if(!container) return;
   container.innerHTML = "";
-  for (let i = 1; i <= maxStars; i++) {
-    const span = document.createElement("span");
-    span.textContent = i <= rating ? "★" : "☆";
-    span.className = i <= rating ? "star filled" : "star";
-    container.appendChild(span);
+  for(let i = 1; i <= 5; i++) {
+    container.innerHTML += i <= rating ? "★ " : '<span class="star inactive">★</span> ';
   }
 }
 
-function averageNotes(scores){
-    return promedio = scores.reduce((a, b) => a + b, 0) / scores.length;
-}
+// ==================== NEW COMMENT FUNCTIONALITY ====================
+const btnSend = document.getElementById("rangeFilterCount");
+const textarea = document.getElementById("productDescription");
+const stars = document.querySelectorAll("#starRating .star");
+let selectedScore = 0;
+
+// Selección de calificación
+stars.forEach(star => {
+  star.addEventListener("click", () => {
+    selectedScore = parseInt(star.dataset.value);
+    updateStarsVisual(selectedScore);
+  });
+});
+
+btnSend.addEventListener("click", () => {
+  const commentText = textarea.value.trim();
+  if(!commentText) return alert("Debes escribir un comentario");
+  if(selectedScore === 0) return alert("Debes seleccionar una calificación");
+
+  // Usuario logeado desde localStorage
+  let loggedUser = localStorage.getItem("username") || "Usuario";
+  loggedUser = loggedUser.split("@")[0];
+
+  const dateFormatted = new Date().toLocaleDateString("es-ES");
+
+  // Guardar calificación
+  allRatings.push(selectedScore);
+
+  const commentDiv = document.createElement("div");
+  commentDiv.classList.add("comments-wrapper");
+  commentDiv.innerHTML = `
+    <div class="d-flex gap-2 align-items-center w-100 justify-content-between">
+      <div class="d-flex gap-2 align-items-center">
+        <img class="icon-comment" src="./assets/icon-comment.png" alt="person"/>
+        <p class="user-comment">${loggedUser}</p>
+        <div class="text-custom-grey">${dateFormatted}</div>
+      </div>
+      <div class="stars">${createStars(selectedScore)}</div>
+    </div>
+    <div class="text-white fw-smoll">${commentText}</div>
+  `;
+  commentsContainer.appendChild(commentDiv);
+
+  // Actualizar promedio
+  updateAverageRating();
+
+  // Reset
+  textarea.value = "";
+  selectedScore = 0;
+  updateStarsVisual(0);
+});
