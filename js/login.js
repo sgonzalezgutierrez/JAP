@@ -10,7 +10,7 @@ document
     if (username !== '' && password !== '') {
       localStorage.setItem('loggedIn', 'true');
       localStorage.setItem('username', username);
-
+      localStorage.setItem('modeColor', false);
       window.location.assign('index.html');
     } else {
       alert('Todos los campos deben estar llenos');

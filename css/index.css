@@ -54,3 +54,7 @@ h3 {
 p {
   color: white;
 }
+
+body.white-bg {
+      background-color: white;
+    }
