@@ -12,3 +12,8 @@ document.addEventListener("DOMContentLoaded", function(){
         window.location = "products.html"
     });
 });
+
+function toggleBackground() { document.body.classList.toggle('white-bg');
+    let savedMode = localStorage.getItem('modeColor');
+    localStorage.setItem('modeColor', !savedMode);
+ }
