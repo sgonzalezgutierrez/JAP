@@ -95,7 +95,7 @@ function updateStarsVisual(score) {
 function calculateAverage(scores) {
   if(!scores.length) return 0;
   const sum = scores.reduce((a,b) => a+b,0);
-  return Math.round(sum / scores.length);
+  return Math.trunc(sum / scores.length);
 }
 
 function updateAverageRating() {
@@ -124,7 +124,6 @@ function renderStars(container, rating) {
   }
 }
 
-// ==================== NEW COMMENT FUNCTIONALITY ====================
 const btnSend = document.getElementById("rangeFilterCount");
 const textarea = document.getElementById("productDescription");
 const stars = document.querySelectorAll("#starRating .star");
