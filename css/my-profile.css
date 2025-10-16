@@ -1,0 +1,229 @@
+/* ===================================
+   ESTILOS DEL PERFIL
+   =================================== */
+
+/* Main container */
+main {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.profile-card {
+  background-color: #003f4b;
+  border-radius: 8px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Header del perfil */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.profile-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Avatar */
+.avatar-container {
+  position: relative;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #82a3a9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.avatar-icon {
+  width: 45px;
+  height: 45px;
+  fill: #3c747e;
+}
+
+.camera-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background-color: #3c747e;
+  border-radius: 50%;
+  border: 3px solid #003f4b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.camera-button:hover {
+  background-color: #82a3a9;
+  transform: scale(1.1);
+}
+
+.camera-icon {
+  width: 14px;
+  height: 14px;
+  fill: #ffffff;
+}
+
+/* Toggle de modo oscuro */
+.dark-mode-toggle {
+  background: none;
+  border: none;
+  color: #ccd7dc;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.dark-mode-toggle:hover {
+  color: #ffffff;
+}
+
+/* Formulario */
+.profile-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  color: #ffffff;
+  font-size: 1rem;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Input wrapper */
+.input-wrapper {
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 45px 10px 12px;
+  background-color: #3c747e;
+  border: 1px solid #82a3a9;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: border 0.2s;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #82a3a9;
+  background-color: #3c747e;
+}
+
+.form-input::placeholder {
+  color: #B0BEC5;
+}
+
+/* Icono de edición */
+.edit-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  fill: #82a3a9;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-icon:hover {
+  fill: #ccd7dc;
+}
+
+/* Menú de puntos */
+.menu-dots {
+  position: absolute;
+  right: 12px;
+  top: -30px;
+  background: none;
+  border: none;
+  color: #ccd7dc;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.2s;
+}
+
+.menu-dots:hover {
+  color: #ffffff;
+}
+
+/* Botón de submit */
+.submit-button {
+  width: 100%;
+  padding: 12px 0;
+  background-color: #f5a001;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.submit-button:hover {
+  background-color: #d98d00;
+}
+
+.submit-button:active {
+  transform: translateY(1px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 24px 16px;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .avatar-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  main {
+    padding: 20px 10px;
+  }
+}
