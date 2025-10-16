@@ -8,34 +8,85 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
+  <link href="css/my-profile.css" rel="stylesheet">
 </head>
 
 <body>
   <div id="nav-container"></div>
-  <main>
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+<main>
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="profile-avatar-section">
+        <div class="avatar-container">
+          <div class="avatar">
+            <svg class="avatar-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+          <button class="camera-button">
+            <svg class="camera-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 15.2c-2.13 0-3.87-1.74-3.87-3.87S9.87 7.46 12 7.46s3.87 1.74 3.87 3.87-1.74 3.87-3.87 3.87zM16.5 3h-3l-1.5 1.5h-3L7.5 3h-3C3.67 3 3 3.67 3 4.5v12c0 .83.67 1.5 1.5 1.5h15c.83 0 1.5-.67 1.5-1.5v-12c0-.83-.67-1.5-1.5-1.5z"/>
+            </svg>
+          </button>
+        </div>
       </div>
+      
+      <button class="dark-mode-toggle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Z"/>
+        </svg>
+        Oscuro
+      </button>
     </div>
-  </main>
-  <footer class="text-muted">
+
+    <form>
+      <div class="form-group" style="position: relative;">
+        <button type="button" class="menu-dots">⋮</button>
+        <label class="form-label">Nombre</label>
+        <div class="input-wrapper">
+          <input type="text" class="form-input" value="Juanisimo" />
+          <svg class="edit-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Apellido</label>
+        <div class="input-wrapper">
+          <input type="text" class="form-input" />
+          <svg class="edit-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <div class="input-wrapper">
+          <input type="email" class="form-input" />
+          <svg class="edit-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Teléfono</label>
+        <div class="input-wrapper">
+          <input type="tel" class="form-input" />
+          <svg class="edit-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-button">Guardar</button>
+    </form>
+  </div>
+</main>
+
+   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
         <a href="#">Volver arriba</a>
