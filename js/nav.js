@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li><button id="logoutBtn" class="dropdown-item">Cerrar sesión</button></li>
+                <li><button id="myProfile" class="dropdown-item">Mi perfil</button></li>
               </ul>
             </li>
           </ul>
@@ -44,5 +45,8 @@ document.getElementById('logoutBtn').addEventListener('click', function () {
   localStorage.removeItem('loggedIn');
   localStorage.removeItem('username');
   window.location.assign('login.html');
+});
+document.getElementById('myProfile').addEventListener('click', function () {
+   window.location.href = "my-profile.html";
 });
 });
