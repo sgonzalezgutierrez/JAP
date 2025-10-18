@@ -1,4 +1,19 @@
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const isLightMode = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+}
+
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
+    loadSavedTheme();
+    
     document.getElementById("autos").addEventListener("click", function() {
         localStorage.setItem("catID", 101);
         window.location = "products.html"
@@ -12,8 +27,3 @@ document.addEventListener("DOMContentLoaded", function(){
         window.location = "products.html"
     });
 });
-
-function toggleBackground() { document.body.classList.toggle('white-bg');
-    let savedMode = localStorage.getItem('modeColor');
-    localStorage.setItem('modeColor', !savedMode);
- }
