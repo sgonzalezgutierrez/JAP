@@ -15,9 +15,6 @@ function loadSavedTheme() {
 
 // Función para cargar la información del perfil según el email
 function profileInfo(email) {
-  if (!email) {
-    return;
-  }
 
   // Obtener todos los perfiles guardados
   const savedData = localStorage.getItem('perfilData');
@@ -42,7 +39,6 @@ function profileInfo(email) {
         document.getElementById('telefono').value = userProfile.telefono;
       }
       
-      console.log('✅ Datos cargados desde localStorage para:', email);
     }
   }
 }
@@ -57,17 +53,6 @@ function saveProfileData(event) {
   const email = document.getElementById('email').value.trim();
   const telefono = document.getElementById('telefono').value.trim();
   
-  // Validar que los campos obligatorios no estén vacíos
-  if (!nombre || !apellido || !telefono) {
-    alert('❌ Por favor completa todos los campos obligatorios');
-    return;
-  }
-  
-  // Validar que haya un email
-  if (!email) {
-    alert('❌ No hay email de usuario');
-    return;
-  }
   
   // Crear objeto con los datos del perfil
   const perfil = {
@@ -91,12 +76,6 @@ function saveProfileData(event) {
   // Guardar todo de vuelta en localStorage
   localStorage.setItem('perfilData', JSON.stringify(allProfiles));
   
-  alert('✅ Perfil guardado exitosamente!');
-  
-  console.log('=== PERFIL GUARDADO ===');
-  console.log('Email:', email);
-  console.log('Datos:', perfil);
-  console.log('=====================');
 }
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -110,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function(){
   // Cargar perfil pasando el email como parámetro
   profileInfo(email);
   
-  // Agregar evento al formulario (usa querySelector porque no tiene ID)
   const form = document.querySelector('form');
   if (form) {
     form.addEventListener('submit', saveProfileData);
