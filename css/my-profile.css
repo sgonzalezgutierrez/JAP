@@ -37,17 +37,17 @@ main {
 /* Avatar */
 .avatar-container {
   position: relative;
+  width: 70px;
+  height: 70px;
 }
 
 .avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
   background-color: #82a3a9;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  z-index: 1;
 }
 
 .avatar-icon {
@@ -62,25 +62,21 @@ main {
   right: 0;
   width: 28px;
   height: 28px;
-  background-color: #3c747e;
+  background-color: #CDE2E6;
   border-radius: 50%;
-  border: 3px solid #003f4b;
+  border: 0px solid #CDE2E6;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.2s;
+  z-index: 3;
+  padding: 0 !important;
 }
 
 .camera-button:hover {
   background-color: #82a3a9;
   transform: scale(1.1);
-}
-
-.camera-icon {
-  width: 14px;
-  height: 14px;
-  fill: #ffffff;
 }
 
 /* Toggle de modo oscuro */
@@ -226,4 +222,30 @@ main {
   main {
     padding: 20px 10px;
   }
+
+ .avatar-container {
+    width: 60px;
+    height: 60px;
+ }
+
+  .avatar, #imagePreview {
+    width: 60px;
+    height: 60px;
+  }
+
+}
+
+.avatar, #imagePreview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#imagePreview {
+  display: none; 
+  z-index: 2; 
 }
