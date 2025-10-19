@@ -1,3 +1,21 @@
+// ========== FUNCIONES GLOBALES ==========
+
+// Función para cambiar el tema
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  const isLightMode = document.body.classList.contains('light-mode');
+  localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+}
+
+// Función para cargar el tema guardado
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light-mode');
+  }
+}
+
+// Función para comprimir imagen
 function compressImage(file, callback) {
     const reader = new FileReader();
     reader.onload = function(event) {
@@ -6,7 +24,6 @@ function compressImage(file, callback) {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Redimensionar la imagen (máximo 400x400 para avatares)
             let width = img.width;
             let height = img.height;
             const maxSize = 400;
@@ -27,7 +44,6 @@ function compressImage(file, callback) {
             canvas.height = height;
             ctx.drawImage(img, 0, 0, width, height);
             
-            // Comprimir a 0.7 de calidad
             const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
             callback(compressedDataUrl);
         };
@@ -67,51 +83,14 @@ function displayImage() {
     }
 }
 
-document.getElementById("file").addEventListener("change", function(event){
-    const selectedFile = event.target.files[0];
-    
-    if (selectedFile) {
-        saveImage(selectedFile);
-    }
-});
-
-document.querySelector('.camera-button').addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    document.getElementById('file').click();
-});
-
-document.addEventListener("DOMContentLoaded", function(){
-    displayImage();
-// Función para alternar entre tema claro y oscuro
-function toggleTheme() {
-  document.body.classList.toggle('light-mode');
-  const isLightMode = document.body.classList.contains('light-mode');
-  localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
-}
-
-// Función para cargar el tema guardado
-function loadSavedTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light') {
-    document.body.classList.add('light-mode');
-  }
-}
-
-// Función para cargar la información del perfil según el email
 function profileInfo(email) {
-
-  // Obtener todos los perfiles guardados
   const savedData = localStorage.getItem('perfilData');
   
   if (savedData) {
     const allProfiles = JSON.parse(savedData);
-    
-    // Buscar el perfil de este email específico
     const userProfile = allProfiles[email];
     
     if (userProfile) {
-      // Cargar los datos en los inputs
       if (userProfile.nombre) {
         document.getElementById('nombre').value = userProfile.nombre;
       }
@@ -123,23 +102,18 @@ function profileInfo(email) {
       if (userProfile.telefono) {
         document.getElementById('telefono').value = userProfile.telefono;
       }
-      
     }
   }
 }
 
-// Función para guardar el perfil
 function saveProfileData(event) {
   event.preventDefault();
   
-  // Obtener los valores de todos los inputs
   const nombre = document.getElementById('nombre').value.trim();
   const apellido = document.getElementById('apellido').value.trim();
   const email = document.getElementById('email').value.trim();
   const telefono = document.getElementById('telefono').value.trim();
   
-  
-  // Crear objeto con los datos del perfil
   const perfil = {
     nombre: nombre,
     apellido: apellido,
@@ -147,7 +121,6 @@ function saveProfileData(event) {
     fechaGuardado: new Date().toLocaleString('es-ES')
   };
   
-  // Obtener todos los perfiles existentes
   let allProfiles = {};
   const savedData = localStorage.getItem('perfilData');
   
@@ -155,27 +128,54 @@ function saveProfileData(event) {
     allProfiles = JSON.parse(savedData);
   }
   
-  // Guardar/actualizar el perfil de este email específico
   allProfiles[email] = perfil;
-  
-  // Guardar todo de vuelta en localStorage
   localStorage.setItem('perfilData', JSON.stringify(allProfiles));
-  
 }
 
+// ========== INICIALIZACIÓN ==========
 document.addEventListener("DOMContentLoaded", function(){
-  // Cargar tema guardado
+  // 1. Cargar tema guardado
   loadSavedTheme();
   
-  // Recuperar el email del localStorage
-  const email = localStorage.getItem("username");
-  document.getElementById("email").value = email;
-
-  // Cargar perfil pasando el email como parámetro
-  profileInfo(email);
+  // 2. Conectar botón de tema (ESTO ES LO QUE FALTABA)
+  const themeButton = document.getElementById('theme-toggle'); // O el ID que tenga tu botón
+  if (themeButton) {
+    themeButton.addEventListener('click', toggleTheme);
+  }
   
+  // 3. Cargar perfil
+  const email = localStorage.getItem("username");
+  if (email) {
+    document.getElementById("email").value = email;
+    profileInfo(email);
+  }
+  
+  // 4. Eventos del formulario
   const form = document.querySelector('form');
   if (form) {
     form.addEventListener('submit', saveProfileData);
   }
+  
+  // 5. Eventos de imagen
+  const fileInput = document.getElementById("file");
+  if (fileInput) {
+    fileInput.addEventListener("change", function(event){
+      const selectedFile = event.target.files[0];
+      if (selectedFile) {
+        saveImage(selectedFile);
+      }
+    });
+  }
+  
+  const cameraButton = document.querySelector('.camera-button');
+  if (cameraButton) {
+    cameraButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('file').click();
+    });
+  }
+  
+  // 6. Mostrar imagen guardada
+  displayImage();
 });
