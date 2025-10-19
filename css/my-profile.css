@@ -272,6 +272,35 @@ main {
   main {
     padding: 20px 10px;
   }
+<<<<<<< Updated upstream
+=======
+
+ .avatar-container {
+    width: 60px;
+    height: 60px;
+ }
+
+  .avatar, #imagePreview {
+    width: 60px;
+    height: 60px;
+  }
+
+}
+
+.avatar, #imagePreview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#imagePreview {
+  display: none; 
+  z-index: 2; 
+>>>>>>> Stashed changes
 }
 
 .muted-text {
