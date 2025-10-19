@@ -14,7 +14,7 @@
   --hover-text: #003F4B;
   --link-color: #01171b;
   --link-hover: #e8f3f5;
-  --muted-text: #ffffff;
+  --text-muted: #ffffff;
 }
 
 body.light-mode {
@@ -33,7 +33,7 @@ body.light-mode {
   --hover-text: #ffffff;
   --link-color: #0d6efd;
   --link-hover: #0a58ca;
-  --muted-text: #a4c4ca;
+  --text-muted: #a4c4ca;
 }
 
 body {
@@ -127,7 +127,7 @@ h2 {
 }
 
 .text-muted {
-  color: var(--muted-text) !important;
+  color: var(--text-muted) !important;
   transition: color 0.3s ease;
 }
 
