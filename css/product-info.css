@@ -1,6 +1,46 @@
+:root {
+  --bg-primary: #00303A;
+  --bg-secondary: #003F4B;
+  --bg-tertiary: #3c747e;
+  --text-primary: #f0f8ff;
+  --text-secondary: #cae3f8;
+  --text-grey: #9a9a9a;
+  --border-color: #29636E;
+  --border-light: #a4c4ca;
+  --btn-bg: #027084;
+  --btn-hover: #a4c4ca;
+  --btn-text: #f0f8ff;
+  --btn-text-hover: #003F4B;
+  --link-color: #01171b;
+  --link-hover: #e8f3f5;
+}
+
+body.light-mode {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #f3f3f3;
+  --bg-tertiary: #e8f3f5;
+  --text-primary: #050000;
+  --text-secondary: #161616;
+  --text-grey: #6b6b6b;
+  --border-color: #E3E3E3;
+  --border-light: #027084;
+  --btn-bg: #028299;
+  --btn-hover: #027084;
+  --btn-text: #ffffff;
+  --btn-text-hover: #ffffff;
+  --link-color: #027084;
+  --link-hover: #028299;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Estilos para el cuadro general que contiene a los demás elementos en su interior*/
 .product-info-container {
-    background-color: #00303A !important;
+    background-color: var(--bg-primary) !important;
     border-radius: 10px;
     margin-top: 32px;
     margin-bottom: 32px;
@@ -10,36 +50,36 @@
     gap: 30px;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s ease;
 }
 
-/* Aquí está contenido el estilo de tanto el título del producto, como de la cantidad vendida y el precio de forma tal que queden a la misma altura en el container general*/
 .info-producto {
-    background-color: #00303A;
-    color: #f0f8ff;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     font-size: 20px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 0px 22px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/*Este cuadro aparte funciona para lograr que la cantidad de productos vendidos y su precio queden de acuerdo al Figma dentro de un recuadro independiente*/
 .precio-vendidos {
     display: flex;
     width: 50%;
     justify-content: space-between;
-    background-color: #003F4B;
-    border: 2px solid #29636E;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
     border-radius: 10px; 
-    padding: 10px; 
+    padding: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* La galería en sus diferentes clases permiten, entre otras cosas, que las imagenes se encuentren por debajo de la palabra "Galería", que tenga la animación al paar por arriba de cada image, y que éstas estén alineadas*/
 .galeria-imagenes {
     display: flex;
     flex-wrap: wrap;
-     gap:12px;
+    gap:12px;
     justify-content: start;
 }
 
@@ -47,11 +87,12 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: #003F4B;
+    background: var(--bg-secondary);
     margin-top: 0px !important;
-    border: 2px solid #29636E;
+    border: 2px solid var(--border-color);
     border-radius: 10px;  
-    padding: 20px; 
+    padding: 20px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .galeria-imagenes img {
@@ -59,18 +100,17 @@
     max-height: 180px;
     object-fit: cover;
     border-radius: 8px;
-    border: 2px solid #a4c4ca;
+    border: 2px solid var(--border-light);
     background: #fff;
     transition: box-shadow 0.2s;
 }
 
 .galeria-imagenes img:hover {
-    box-shadow: 0 0 8px #a4c4ca;
+    box-shadow: 0 0 8px var(--border-light);
 }
 
-/*En el título lo principal fue lograr que quede centrado dentro del info-producto y no centrado respecto al container principal*/
 h4 {
-    color: #f0f8ff;
+    color: var(--text-primary);
     font-size: 35px;
     font-weight: bold;
     text-align: center;
@@ -81,6 +121,7 @@ h4 {
     border: none;
     border-radius: 0;
     display: block;
+    transition: color 0.3s ease;
 }
 
 .title {
@@ -88,46 +129,49 @@ h4 {
     text-align: center;
 }
 
-
 .descripcion {
-    background-color: #003F4B;
+    background-color: var(--bg-secondary);
     border-radius: 10px;
-    color: #f0f8ff;
+    color: var(--text-primary);
     margin-bottom: 0px !important;
     padding: 20px;
-    border: 2px solid #29636E;
+    border: 2px solid var(--border-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .descripcion-titulo {
-    color: #f0f8ff;
+    color: var(--text-primary);
     font-size: 24px;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .galeria {
-    color: #f0f8ff;
+    color: var(--text-primary);
     font-size: 24px;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .text-muted {
-    color: #cae3f8 !important;
+    color: var(--text-secondary) !important;
+    transition: color 0.3s ease;
 }
 
 .float-end a {
-  color: #01171b;
+  color: var(--link-color);
   text-decoration: underline;
   transition: color 0.2s;
 }
 
 .float-end a:hover,
-.float-end a:focus {  /*esto permite qe al pasar el mouse por encima del link, cambie de color*/
-    color: #e8f3f5;
+.float-end a:focus {
+    color: var(--link-hover);
     background: none;
 }
 
 a[target="_blank"] {
-    color: #01171b !important;
+    color: var(--link-color) !important;
     text-decoration: underline;
     padding: 6px 12px;
     cursor: pointer;
@@ -137,31 +181,32 @@ a[target="_blank"] {
     display: inline-block;
 }
 
-a[target="_blank"]:hover,  /*los atributos con target="_blank" o si tienen la clase .text-muted cambian de color al pasar por arriba con el mouse cambien de color*/
+a[target="_blank"]:hover,
 a[target="_blank"]:focus,
 a[target="_blank"].text-muted:hover,
 a[target="_blank"].text-muted:focus {
-    color: #e8f3f5 !important;
+    color: var(--link-hover) !important;
     background: none !important;
 }
 
 .descripcion {
-    background-color: #003F4B;
-    color: #f0f8ff;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
     font-size: 16px;
     text-align: justify;
     margin-bottom: 20px;
 }
 
 .content-related-products {
-    background: #003F4B;
+    background: var(--bg-secondary);
     margin-top: 0px !important;
-    border: 2px solid #29636E;
+    border: 2px solid var(--border-color);
     border-radius: 10px;  
     padding: 20px;
     height: 100%;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .content-related-products img {
@@ -169,20 +214,21 @@ a[target="_blank"].text-muted:focus {
     max-height: 180px;
     object-fit: cover;
     border-radius: 8px;
-    border: 2px solid #a4c4ca;
+    border: 2px solid var(--border-light);
     background: #fff;
     transition: box-shadow 0.2s;
 }
 
 .content-comments {
-    background: #003F4B;
+    background: var(--bg-secondary);
     margin-top: 0px !important;
-    border: 2px solid #29636E;
+    border: 2px solid var(--border-color);
     border-radius: 10px;  
     padding: 20px;
     height: 100%;
     display: flex;
     gap:20px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .product-reviews{
@@ -200,10 +246,11 @@ a[target="_blank"].text-muted:focus {
 }
 
 .user-comment{
-    color:white;
+    color: var(--text-primary);
     font-size: medium;
     font-weight: 500;
     margin-bottom: 0px !important;
+    transition: color 0.3s ease;
 }
 
 .products-wrapper {
@@ -222,7 +269,8 @@ a[target="_blank"].text-muted:focus {
 }
 
 .text-custom-grey {
-    color: #9a9a9a;
+    color: var(--text-grey);
+    transition: color 0.3s ease;
 }
 
 .product-item {
@@ -233,61 +281,61 @@ a[target="_blank"].text-muted:focus {
 }
 
 .title-related-products{
-    color: #f0f8ff;
+    color: var(--text-primary);
     font-size: 24px;
     font-weight: bold; 
     display: flex;
     width: 100%;
+    transition: color 0.3s ease;
 }
 
 .name-related-product {
-    color: #f0f8ff;
-    font-weight: 500; 
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 textarea{
-    background:#3c747e !important;
-    border: 1px solid #82a3a9 !important;
+    background: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-light) !important;
+    color: var(--text-primary) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 textarea::placeholder {
-  color: white !important;   
-  opacity: 1;    
+  color: var(--text-secondary) !important;   
+  opacity: 0.7;    
 }
 
 .stars {
-      font-size: 30px;
-      color: orange;
-      line-height: 30px
-    }
-    .star {
-      cursor: pointer;
-    }
-    .star.inactive {
-      color: gray;
-    }
+    font-size: 30px;
+    color: orange;
+    line-height: 30px;
+}
+
+.star {
+    cursor: pointer;
+}
+
+.star.inactive {
+    color: gray;
+}
 
 .btn-group .btn-light {
-    color: #f0f8ff !important;
-    background-color: #027084 !important;
-    border: 1px solid #027084 !important;
+    color: var(--btn-text) !important;
+    background-color: var(--btn-bg) !important;
+    border: 1px solid var(--btn-bg) !important;
     padding: 6px 12px !important;
     cursor: pointer !important;
     border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-group .btn-light:hover,
 .btn-group .btn-light:focus,
 .btn-group .btn-light.active {
-    background-color: #a4c4ca !important;
-    color: #003F4B !important;
-}
-
-.btn-group .btn-light:hover,
-.btn-group .btn-light:focus,
-.btn-group .btn-light.active {
-    background-color: #a4c4ca !important;
-    color: #003F4B !important;
+    background-color: var(--btn-hover) !important;
+    color: var(--btn-text-hover) !important;
 }
 
 @media (max-width: 1200px) {
@@ -314,18 +362,18 @@ textarea::placeholder {
         font-size: 20px;
         color: orange;
         width: 100%;
-        white-space: nowrap
-        }
-
-        .star {
-            cursor: pointer;
-        }
-
-        .star.inactive {
-            color: gray;
-            font-size: 20px;
-        }
+        white-space: nowrap;
     }
+
+    .star {
+        cursor: pointer;
+    }
+
+    .star.inactive {
+        color: gray;
+        font-size: 20px;
+    }
+}
 
 @media (max-width: 768px) {
     .precio-vendidos {
