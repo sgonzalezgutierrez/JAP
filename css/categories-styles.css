@@ -1,111 +1,163 @@
+:root {
+  --bg-primary: #001E24;
+  --bg-secondary: #003F4B;
+  --bg-card: #003F4B;
+  --text-primary: #ffffff;
+  --text-secondary: #f0f8ff;
+  --btn-bg: #027084;
+  --btn-hover: #028299;
+  --border-color: #003F4B;
+  --card-body-bg: #001E24;
+  --input-bg: #a4c4ca;
+  --input-text: #003F4B;
+  --hover-bg: #a4c4ca;
+  --hover-text: #003F4B;
+  --link-color: #01171b;
+  --link-hover: #e8f3f5;
+  --muted-text: #ffffff;
+}
+
+body.light-mode {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #f3f3f3;
+  --bg-card: #f0f8ff;
+  --text-primary: #050000;
+  --text-secondary: #161616;
+  --btn-bg: #028299;
+  --btn-hover: #027084;
+  --border-color: #E3E3E3;
+  --card-body-bg: #f3f3f3;
+  --input-bg: #e9ecef;
+  --input-text: #212529;
+  --hover-bg: #027084;
+  --hover-text: #ffffff;
+  --link-color: #0d6efd;
+  --link-hover: #0a58ca;
+  --muted-text: #a4c4ca;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 h2 {
-    color:#f0f8ff;
+    color:var(--text-secondary);
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .lead {
-    color:#f0f8ff;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .font-weight-normal.text-end.my-2 {
-    color: #f0f8ff;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 #rangeFilterCountMin, #rangeFilterCountMax {
-    color: #003F4B;
-    background-color: #a4c4ca;
+  color: var(--input-text);
+  background-color: var(--input-bg);
+  transition: all 0.3s ease;
 }
 
 .list-group {
-    background-color: #003F4B !important;
-    border-radius: 10px;
+  background-color: var(--bg-secondary) !important;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .list-group-item {
-    background-color: transparent !important;
-    color:#f0f8ff;
+  background-color: transparent !important;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
 }
 
 .list-group-item:hover, .list-group-item:focus {
-    background-color: #a4c4ca !important;
-    color: #003F4B !important;
+  background-color: var(--hover-bg) !important;
+  color: var(--hover-text) !important;
 }
 
 #rangeFilterCount {
-    background-color: #003f4b !important;
-    border-color: #003f4b !important;
-    color: #f0f8ff !important;
-    padding: 6px 12px !important;
-    cursor: pointer !important;
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--bg-secondary) !important;
+  color: var(--text-secondary) !important;
+  padding: 6px 12px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease;
 }
 
 #rangeFilterCount:hover, #rangeFilterCount:focus {
-    background-color: #a4c4ca !important;
-    color: #003F4B !important;
+  background-color: var(--hover-bg) !important;
+  color: var(--hover-text) !important;
 }
 
 #clearRangeFilter {
-    color: #f0f8ff !important;
-    padding: 6px 12px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    transition: color 0.2s;
+  color: var(--text-secondary) !important;
+  padding: 6px 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.3s ease;
 }
 
 #clearRangeFilter:hover, #clearRangeFilter:focus {
-    color: #a4c4ca !important;
-    background: none !important;
+  color: var(--hover-bg) !important;
+  background: none !important;
 }
 
 .btn-group .btn-light {
-    color: #f0f8ff !important;
-    background-color: #003f4b !important;
-    border: 1px solid #003f4b !important;
-    padding: 6px 12px !important;
-    cursor: pointer !important;
-    border-radius: 4px;
+  color: var(--text-secondary) !important;
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--bg-secondary) !important;
+  padding: 6px 12px !important;
+  cursor: pointer !important;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
 .btn-group .btn-light:hover,
 .btn-group .btn-light:focus,
 .btn-group .btn-light.active {
-    background-color: #a4c4ca !important;
-    color: #003F4B !important;
+  background-color: var(--hover-bg) !important;
+  color: var(--hover-text) !important;
 }
 
 .text-muted {
-    color: #cae3f8 !important;
+  color: var(--muted-text) !important;
+  transition: color 0.3s ease;
 }
 
 .float-end a {
-  color: #01171b;
+  color: var(--link-color);
   text-decoration: underline;
-  transition: color 0.2s;
+  transition: color 0.3s ease;
 }
 
 .float-end a:hover,
 .float-end a:focus {
-    color: #e8f3f5;
-    background: none;
+  color: var(--link-hover);
+  background: none;
 }
 
 a[target="_blank"] {
-    color: #01171b !important;
-    text-decoration: underline;
-    padding: 6px 12px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    transition: color 0.2s;
-    display: inline-block;
+  color: var(--link-color) !important;
+  text-decoration: underline;
+  padding: 6px 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.3s ease;
+  display: inline-block;
 }
 
 a[target="_blank"]:hover,
 a[target="_blank"]:focus,
 a[target="_blank"].text-muted:hover,
 a[target="_blank"].text-muted:focus {
-    color: #e8f3f5 !important;
-    background: none !important;
+  color: var(--link-hover) !important;
+  background: none !important;
 }
-
