@@ -8,6 +8,7 @@
   --btn-hover: #028299;
   --border-color: #003F4B;
   --card-body-bg: #001E24;
+  --text-muted: #ffffff;
 }
 
 body.light-mode {
@@ -20,6 +21,7 @@ body.light-mode {
   --btn-hover: #027084;
   --border-color: #E3E3E3;
   --card-body-bg: #f3f3f3;
+  --text-muted: #a4c4ca;
 }
 
 body {
@@ -103,4 +105,8 @@ body.white-bg {
 .card.mb-4.shadow-sm.custom-card.cursor-active {
   background-color: var(--card-body-bg) !important;
   color: var(--text-primary) !important;
+}
+
+.muted-text {
+  color: var(--text-muted) !important;
 }
