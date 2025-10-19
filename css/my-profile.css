@@ -1,8 +1,57 @@
-/* ===================================
-   ESTILOS DEL PERFIL
-   =================================== */
+:root {
+  --bg-primary: #001E24;
+  --bg-secondary: #003F4B;
+  --bg-card: #003F4B;
+  --text-primary: #ffffff;
+  --text-secondary: #f0f8ff;
+  --btn-bg: #027084;
+  --btn-hover: #028299;
+  --border-color: #003F4B;
+  --card-body-bg: #001E24;
+  --input-bg: #3c747e;
+  --input-border: #82a3a9;
+  --input-text: #ffffff;
+  --placeholder-text: #B0BEC5;
+  --icon-color: #82a3a9;
+  --icon-hover: #ccd7dc;
+  --avatar-bg: #82a3a9;
+  --avatar-icon: #3c747e;
+  --submit-btn: #028299;
+  --submit-btn-hover: #027084;
+  --shadow-color: rgba(255, 255, 255, 0.1);
+  --text-muted: #ffffff;
+}
 
-/* Main container */
+body.light-mode {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #f3f3f3;
+  --bg-card: #f0f8ff;
+  --text-primary: #050000;
+  --text-secondary: #161616;
+  --btn-bg: #028299;
+  --btn-hover: #027084;
+  --border-color: #E3E3E3;
+  --card-body-bg: #f3f3f3;
+  --input-bg: #ffffff;
+  --input-border: #ced4da;
+  --input-text: #212529;
+  --placeholder-text: #6c757d;
+  --icon-color: #6c757d;
+  --icon-hover: #495057;
+  --avatar-bg: #e9ecef;
+  --avatar-icon: #6c757d;
+  --submit-btn: #028299;
+  --submit-btn-hover: #027084;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --text-muted: #a4c4ca;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 main {
   min-height: calc(100vh - 120px);
   display: flex;
@@ -12,15 +61,15 @@ main {
 }
 
 .profile-card {
-  background-color: #003f4b;
+  background-color: var(--bg-card);
   border-radius: 8px;
   padding: 32px 24px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: all 0.3s ease;
 }
 
-/* Header del perfil */
 .profile-header {
   display: flex;
   justify-content: space-between;
@@ -34,26 +83,31 @@ main {
   gap: 15px;
 }
 
-/* Avatar */
 .avatar-container {
   position: relative;
+  width: 70px;
+  height: 70px;
 }
 
 .avatar {
+  background-color: #82a3a9;
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background-color: #82a3a9;
+  background-color: var(--avatar-bg);
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  z-index: 1;
+  transition: background-color 0.3s ease;
 }
 
 .avatar-icon {
   width: 45px;
   height: 45px;
-  fill: #3c747e;
+  fill: var(--avatar-icon);
+  transition: fill 0.3s ease;
 }
 
 .camera-button {
@@ -62,46 +116,52 @@ main {
   right: 0;
   width: 28px;
   height: 28px;
-  background-color: #3c747e;
+  background-color: #CDE2E6;
   border-radius: 50%;
-  border: 3px solid #003f4b;
+  border: 0px solid #CDE2E6;
+  background-color: var(--avatar-icon);
+  border-radius: 50%;
+  border: 3px solid var(--bg-card);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.2s;
+  z-index: 3;
+  padding: 0 !important;
+  transition: all 0.3s ease;
 }
 
 .camera-button:hover {
-  background-color: #82a3a9;
+  background-color: var(--avatar-bg);
   transform: scale(1.1);
 }
 
+/* Toggle de modo oscuro */
 .camera-icon {
   width: 14px;
   height: 14px;
-  fill: #ffffff;
+  fill: var(--text-primary);
+  transition: fill 0.3s ease;
 }
 
-/* Toggle de modo oscuro */
 .dark-mode-toggle {
   background: none;
   border: none;
-  color: #ccd7dc;
+  color: var(--icon-color);
   font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 5px;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .dark-mode-toggle:hover {
-  color: #ffffff;
+  color: var(--icon-hover);
 }
 
-/* Formulario */
 .profile-card form {
   display: flex;
   flex-direction: column;
@@ -114,14 +174,14 @@ main {
 
 .form-label {
   display: block;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   margin-bottom: 6px;
   font-weight: 500;
   font-family: 'Segoe UI', Arial, sans-serif;
+  transition: color 0.3s ease;
 }
 
-/* Input wrapper */
 .input-wrapper {
   position: relative;
 }
@@ -129,26 +189,26 @@ main {
 .form-input {
   width: 100%;
   padding: 10px 45px 10px 12px;
-  background-color: #3c747e;
-  border: 1px solid #82a3a9;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 4px;
-  color: #ffffff;
+  color: var(--input-text);
   font-size: 1rem;
-  transition: border 0.2s;
+  transition: all 0.3s ease;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #82a3a9;
-  background-color: #3c747e;
+  border-color: var(--icon-color);
+  background-color: var(--input-bg);
 }
 
 .form-input::placeholder {
-  color: #B0BEC5;
+  color: var(--placeholder-text);
+  transition: color 0.3s ease;
 }
 
-/* Icono de edición */
 .edit-icon {
   position: absolute;
   right: 12px;
@@ -156,38 +216,36 @@ main {
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
-  fill: #82a3a9;
+  fill: var(--icon-color);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .edit-icon:hover {
-  fill: #ccd7dc;
+  fill: var(--icon-hover);
 }
 
-/* Menú de puntos */
 .menu-dots {
   position: absolute;
   right: 12px;
   top: -30px;
   background: none;
   border: none;
-  color: #ccd7dc;
+  color: var(--icon-color);
   font-size: 20px;
   cursor: pointer;
   padding: 5px;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .menu-dots:hover {
-  color: #ffffff;
+  color: var(--icon-hover);
 }
 
-/* Botón de submit */
 .submit-button {
   width: 100%;
   padding: 12px 0;
-  background-color: #f5a001;
+  background-color: var(--submit-btn);
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -195,19 +253,18 @@ main {
   font-weight: 600;
   cursor: pointer;
   margin-top: 20px;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .submit-button:hover {
-  background-color: #d98d00;
+  background-color: var(--submit-btn-hover);
 }
 
 .submit-button:active {
   transform: translateY(1px);
 }
 
-/* Responsive */
 @media (max-width: 480px) {
   .profile-card {
     padding: 24px 16px;
@@ -226,4 +283,35 @@ main {
   main {
     padding: 20px 10px;
   }
+
+ .avatar-container {
+    width: 60px;
+    height: 60px;
+ }
+
+  .avatar, #imagePreview {
+    width: 60px;
+    height: 60px;
+  }
+
+}
+
+.avatar, #imagePreview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#imagePreview {
+  display: none; 
+  z-index: 2; 
+}
+}
+
+.muted-text {
+  color: var(--text-muted) !important;
 }
