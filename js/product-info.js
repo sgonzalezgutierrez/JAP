@@ -15,15 +15,52 @@ function loadSavedTheme() {
 // Cargar tema al inicio
 loadSavedTheme();
 
+// ==================== FUNCIÓN COMPRAR ====================
+function agregarAlCarrito(producto) {
+    // Obtener carrito actual del localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Crear objeto con info del producto
+    const productoCarrito = {
+        id: producto.id,
+        name: producto.name,
+        cost: producto.cost,
+        currency: producto.currency,
+        image: producto.images[0], // Primera imagen
+        count: 1 // Cantidad inicial
+    };
+    
+    // Verificar si el producto ya está en el carrito
+    const indexExistente = cart.findIndex(item => item.id === productoCarrito.id);
+    
+    if (indexExistente !== -1) {
+        // Si ya existe, incrementar cantidad
+        cart[indexExistente].count += 1;
+    } else {
+        // Si no existe, agregarlo
+        cart.push(productoCarrito);
+    }
+    
+    // Guardar carrito actualizado en localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Navegar a cart.html
+    window.location.href = 'cart.html';
+}
+
 // ==================== PRODUCT DATA ====================
 const selectedProductId = localStorage.getItem("productoSeleccionado");
 const productUrl = `https://japceibal.github.io/emercado-api/products/${selectedProductId}.json`;
 const commentsUrl = `https://japceibal.github.io/emercado-api/products_comments/${selectedProductId}.json`;
 
+let productData; // ← VARIABLE GLOBAL PARA EL PRODUCTO
+
 // ==================== FETCH PRODUCT ====================
 fetch(productUrl)
   .then(res => res.json())
   .then(product => {
+    productData = product; // ← GUARDAR PRODUCTO GLOBALMENTE
+    
     document.querySelector("h4").textContent = product.name;
     document.querySelector(".precio").textContent = `Precio: ${product.currency} ${product.cost}`;
     document.querySelector(".vendidos").textContent = `Cantidad vendida: ${product.soldCount}`;
@@ -45,6 +82,11 @@ fetch(productUrl)
           <p class="name-related-product mt-2">${p.name}</p>
         </div>
       `;
+    });
+    
+    // ← AGREGAR LISTENER DEL BOTÓN COMPRAR
+    document.getElementById('btnComprar').addEventListener('click', function() {
+        agregarAlCarrito(productData);
     });
   });
 
