@@ -34,6 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <li><button id="myProfile" class="dropdown-item">Mi perfil</button></li>
               </ul>
             </li>
+            <button type="button" class="btn-primary position-relative rounded-pill">
+              <li class="nav-item">
+                <a class="nav-link" href="cart.html">🛒 Mi Carrito</a>
+              </li>
+              <span id="cantidad" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                
+              </span>
+            </button>
           </ul>
         </div>
       </div>
@@ -49,4 +57,20 @@ document.getElementById('logoutBtn').addEventListener('click', function () {
 document.getElementById('myProfile').addEventListener('click', function () {
    window.location.href = "my-profile.html";
 });
+contarProdcuts();
 });
+
+function contarProdcuts() {
+  let span = document.getElementById("cantidad");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let numero = 0;
+  for (const product of cart) {
+    numero += product.count;
+  }
+  if (numero > 0) {
+    span.innerHTML = numero;
+    span.style.display = "block";
+  }else{
+    span.style.display = "none";
+  }
+}

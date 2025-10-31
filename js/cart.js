@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function(e){
 // Función para mostrar el carrito
 function showCart(){
     const cartInfo = document.querySelector(".cart");
-    
+
     if(!cartInfo){
         console.error('No se encontró el elemento .cart-items');
         return;
@@ -124,6 +124,7 @@ function removeItem(index) {
 // Función para guardar el carrito en localStorage
 function saveCart() {
     localStorage.setItem('cart', JSON.stringify(cartProducts));
+    contarProdcuts();
 }
 
 // Función para continuar comprando
