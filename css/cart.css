@@ -619,3 +619,6 @@ main {
   transform: translateY(-2px);
 }
 
+input::placeholder {
+  color: #d4d3d3;
+}
