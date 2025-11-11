@@ -31,6 +31,53 @@ document.addEventListener("DOMContentLoaded", function (e) {
   }
 });
 
+// ==================== CALCULAR TOTALES ====================
+function calculateTotals() {
+  // Calcular subtotal (suma de todos los productos)
+  const subtotal = cartProducts.reduce((sum, product) => {
+    return sum + (product.cost * product.count);
+  }, 0);
+  
+  // Obtener el tipo de envío seleccionado
+  const shippingTypeElement = document.querySelector('input[name="shippingType"]:checked');
+  let shippingPercentage = 0.15; // Por defecto Premium (15%)
+  
+  if (shippingTypeElement) {
+    const shippingType = shippingTypeElement.value;
+    if (shippingType === 'express') {
+      shippingPercentage = 0.07; // 7%
+    } else if (shippingType === 'standard') {
+      shippingPercentage = 0.05; // 5%
+    }
+  }
+  
+  // Calcular costo de envío
+  const shippingCost = subtotal * shippingPercentage;
+  
+  // Calcular total
+  const total = subtotal + shippingCost;
+  
+  return {
+    subtotal: subtotal,
+    shippingCost: shippingCost,
+    total: total
+  };
+}
+
+// ==================== ACTUALIZAR DOM CON TOTALES ====================
+function updateTotalsDisplay() {
+  const totals = calculateTotals();
+  
+  // Actualizar elementos del DOM en el paso 3
+  const subtotalElement = document.getElementById('summarySubtotal');
+  const costElement = document.getElementById('summaryCost');
+  const totalElement = document.getElementById('summaryTotal');
+  
+  if (subtotalElement) subtotalElement.textContent = `USD ${totals.subtotal.toFixed(2)}`;
+  if (costElement) costElement.textContent = `USD ${totals.shippingCost.toFixed(2)}`;
+  if (totalElement) totalElement.textContent = `USD ${totals.total.toFixed(2)}`;
+}
+
 // Función para cambiar de paso
 function goToStep(step) {
   currentStep = step;
@@ -63,6 +110,8 @@ function goToStep(step) {
     step2.style.display = 'flex';
   } else if (step === 3 && step3) {
     step3.style.display = 'flex';
+    // Actualizar totales cuando se muestra el paso 3
+    updateTotalsDisplay();
   }
 }
 
@@ -220,17 +269,17 @@ function showCart() {
           <!-- Opciones de tipo de envío -->
           <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:20px;">
               <label style="display:flex; align-items:center; gap:12px; margin-bottom:16px; cursor:pointer;">
-                <input type="radio" name="shippingType" value="premium" checked onchange="updateShippingCost(128.85)" style="width:18px; height:18px; cursor:pointer;">
+                <input type="radio" name="shippingType" value="premium" checked onchange="updateTotalsDisplay()" style="width:18px; height:18px; cursor:pointer;">
                 <span style="font-size:16px;">Premium 2 a 5 días (15%)</span>
               </label>
               
               <label style="display:flex; align-items:center; gap:12px; margin-bottom:16px; cursor:pointer;">
-                <input type="radio" name="shippingType" value="express" onchange="updateShippingCost(60.13)" style="width:18px; height:18px; cursor:pointer;">
+                <input type="radio" name="shippingType" value="express" onchange="updateTotalsDisplay()" style="width:18px; height:18px; cursor:pointer;">
                 <span style="font-size:16px;">Express 5 a 8 días (7%)</span>
               </label>
               
               <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
-                <input type="radio" name="shippingType" value="standard" onchange="updateShippingCost(42.95)" style="width:18px; height:18px; cursor:pointer;">
+                <input type="radio" name="shippingType" value="standard" onchange="updateTotalsDisplay()" style="width:18px; height:18px; cursor:pointer;">
                 <span style="font-size:16px;">Standard 12 a 15 días (5%)</span>
               </label>
       
@@ -251,22 +300,22 @@ function showCart() {
           <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:16px; margin-top:8px;">
             <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:16px;">
               <span>Subtotal:</span>
-              <span id="summarySubtotal">${total.toFixed(2)}</span>
+              <span id="summarySubtotal">USD 0.00</span>
             </div>
             <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:16px;">
               <span>Costo de Envío:</span>
-              <span id="summaryCost">$128.85</span>
+              <span id="summaryCost">USD 0.00</span>
             </div>
             <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20px; border-top:1px solid var(--border-color); padding-top:12px; color:var(--text-primary);">
               <span>Total:</span>
-              <span id="summaryTotal">${(total + 128.85).toFixed(2)}</span>
+              <span id="summaryTotal">USD 0.00</span>
             </div>
           </div>
           
           <!-- Botones de acción -->
           <div style="display:flex; gap:8px; margin-top:16px;">
             <button style="width:100%; background-color:#3C747E; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:pointer;" onclick="goToStep(2)">
-              Volver al Carrito
+              Volver
             </button>
             <button style="width:100%; background-color:#0098A6; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:pointer;" onclick="finalizePurchase()">
               Finalizar compra
@@ -283,26 +332,6 @@ function showCart() {
   goToStep(currentStep);
 }
 
-// Variable para almacenar el costo de envío actual
-let currentShippingCost = 128.85;
-
-// Función para actualizar el costo de envío
-function updateShippingCost(cost) {
-  currentShippingCost = cost;
-  
-  const total = cartProducts.reduce((sum, p) => sum + p.cost * p.count, 0);
-  const finalTotal = total + cost;
-  
-  // Actualizar elementos del DOM
-  const costElement = document.getElementById('summaryCost');
-  const totalElement = document.getElementById('summaryTotal');
-  const subtotalElement = document.getElementById('summarySubtotal');
-  
-  if (costElement) costElement.textContent = `${cost.toFixed(2)}`;
-  if (totalElement) totalElement.textContent = `${finalTotal.toFixed(2)}`;
-  if (subtotalElement) subtotalElement.textContent = `${total.toFixed(2)}`;
-}
-
 // Función para finalizar compra (modificada)
 function finalizePurchase() {
   const paymentMethod = document.getElementById('paymentMethod')?.value;
@@ -312,8 +341,7 @@ function finalizePurchase() {
     return;
   }
   
-  const total = cartProducts.reduce((sum, p) => sum + p.cost * p.count, 0);
-  const finalTotal = total + currentShippingCost;
+  const totals = calculateTotals();
   
   // Obtener tipo de envío seleccionado
   const shippingType = document.querySelector('input[name="shippingType"]:checked')?.value || 'premium';
@@ -344,7 +372,7 @@ function finalizePurchase() {
       break;
   }
   
-  alert(`¡Compra finalizada con éxito!\n\nEnvío: ${shippingName}\nMétodo de pago: ${paymentName}\nTotal: ${finalTotal.toFixed(2)}\n\n¡Gracias por tu compra!`);
+  alert(`¡Compra finalizada con éxito!\n\nEnvío: ${shippingName}\nMétodo de pago: ${paymentName}\nTotal: USD ${totals.total.toFixed(2)}\n\n¡Gracias por tu compra!`);
   
   cartProducts = [];
   saveCart();
@@ -365,28 +393,33 @@ function showEmptyCart() {
       </div>
     </div>`;
   }
-
-  document.getElementById("cartTotal").style.display = "none";
-  document.getElementById("actionButtons").style.display = "none";
 }
 
-// Función para aumentar cantidad
+// Función para aumentar cantidad (MODIFICADA)
 function increaseQuantity(index) {
   cartProducts[index].count++;
   saveCart();
   showCart();
+  // Si estamos en el paso 3, actualizar totales
+  if (currentStep === 3) {
+    updateTotalsDisplay();
+  }
 }
 
-// Función para disminuir cantidad
+// Función para disminuir cantidad (MODIFICADA)
 function decreaseQuantity(index) {
   if (cartProducts[index].count > 1) {
     cartProducts[index].count--;
     saveCart();
     showCart();
+    // Si estamos en el paso 3, actualizar totales
+    if (currentStep === 3) {
+      updateTotalsDisplay();
+    }
   }
 }
 
-// Función para eliminar producto
+// Función para eliminar producto (MODIFICADA)
 function removeItem(index) {
   if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
     cartProducts.splice(index, 1);
@@ -396,6 +429,10 @@ function removeItem(index) {
       showEmptyCart();
     } else {
       showCart();
+      // Si estamos en el paso 3, actualizar totales
+      if (currentStep === 3) {
+        updateTotalsDisplay();
+      }
     }
   }
 }
