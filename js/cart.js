@@ -66,16 +66,130 @@ function continueShopping() {
 
 // Function to remove a product from cart
 function removeItem(index) {
-  if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+  const product = cartProducts[index];
+  showDeleteModal(product, index);
+}
+
+// Function to show delete confirmation modal
+function showDeleteModal(product, index) {
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+  `;
+  
+  // Create modal
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    color: var(--text-primary);
+  `;
+  
+  modal.innerHTML = `
+    <style>
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes slideUp {
+        from { 
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to { 
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+    
+    <div style="text-align: center;">
+      <!-- Warning icon -->
+      <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #ef4444; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-size: 48px; color: white;">
+        ⚠️
+      </div>
+      
+      <h2 style="margin: 0 0 16px 0; color: var(--text-primary); font-size: 24px;">¿Eliminar producto?</h2>
+      <p style="margin: 0 0 8px 0; color: var(--text-secondary); font-size: 16px;">¿Estás seguro de que quieres eliminar este producto del carrito?</p>
+      <p style="margin: 0 0 24px 0; color: var(--text-primary); font-weight: bold; font-size: 18px;">${product.name}</p>
+      
+      <!-- Buttons -->
+      <div style="display: flex; gap: 12px;">
+        <button id="cancelDeleteBtn" style="flex: 1; background-color: #6B7280; border: none; border-radius: 12px; padding: 14px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; transition: all 0.2s;">
+          Cancelar
+        </button>
+        <button id="confirmDeleteBtn" style="flex: 1; background-color: #ef4444; border: none; border-radius: 12px; padding: 14px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; transition: all 0.2s;">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  `;
+  
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+  
+  // Hover effects
+  const cancelBtn = modal.querySelector('#cancelDeleteBtn');
+  const confirmBtn = modal.querySelector('#confirmDeleteBtn');
+  
+  cancelBtn.addEventListener('mouseenter', () => {
+    cancelBtn.style.transform = 'scale(1.05)';
+    cancelBtn.style.backgroundColor = '#4B5563';
+  });
+  cancelBtn.addEventListener('mouseleave', () => {
+    cancelBtn.style.transform = 'scale(1)';
+    cancelBtn.style.backgroundColor = '#6B7280';
+  });
+  
+  confirmBtn.addEventListener('mouseenter', () => {
+    confirmBtn.style.transform = 'scale(1.05)';
+    confirmBtn.style.backgroundColor = '#dc2626';
+  });
+  confirmBtn.addEventListener('mouseleave', () => {
+    confirmBtn.style.transform = 'scale(1)';
+    confirmBtn.style.backgroundColor = '#ef4444';
+  });
+  
+  // Cancel button
+  cancelBtn.addEventListener('click', () => {
+    overlay.style.animation = 'fadeIn 0.3s ease reverse';
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+    }, 300);
+  });
+  
+  // Confirm delete button
+  confirmBtn.addEventListener('click', () => {
     cartProducts.splice(index, 1);
     saveCart();
     
-    if (cartProducts.length === 0) {
-      showEmptyCart();
-    } else {
-      showCart();
-    }
-  }
+    overlay.style.animation = 'fadeIn 0.3s ease reverse';
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+      
+      if (cartProducts.length === 0) {
+        showEmptyCart();
+      } else {
+        showCart();
+      }
+    }, 300);
+  });
 }
 
 // Function to increase quantity
@@ -182,20 +296,30 @@ function goToStep(step) {
 }
 
 // ==================== NEW FUNCTIONS FOR CHANGE HANDLING ====================
-function handlePaymentTypeChange(type) {
-  // Update fields according to selected payment type
+function handlePaymentTypeChange() {
+  // Update fields according to selected payment types (checkboxes)
   const cardFields = document.getElementById('cardFields');
   const transferFields = document.getElementById('transferFields');
   
   if (!cardFields || !transferFields) return;
   
-  cardFields.style.display = 'none';
-  transferFields.style.display = 'none';
+  // Get all checked payment types
+  const creditoChecked = document.getElementById('payment-credito')?.checked;
+  const debitoChecked = document.getElementById('payment-debito')?.checked;
+  const transferenciaChecked = document.getElementById('payment-transferencia')?.checked;
   
-  if (type === 'credito' || type === 'debito') {
+  // Show/hide card fields if any card type is selected
+  if (creditoChecked || debitoChecked) {
     cardFields.style.display = 'block';
-  } else if (type === 'transferencia') {
+  } else {
+    cardFields.style.display = 'none';
+  }
+  
+  // Show/hide transfer fields
+  if (transferenciaChecked) {
     transferFields.style.display = 'block';
+  } else {
+    transferFields.style.display = 'none';
   }
   
   updatePaymentButton();
@@ -290,11 +414,11 @@ function updateShippingButton() {
 
 // ==================== REAL-TIME VALIDATION - STEP 3 ====================
 function setupPaymentValidation() {
-  // Validation for payment type radio buttons
-  const paymentRadios = document.querySelectorAll('input[name="paymentType"]');
-  paymentRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      handlePaymentTypeChange(radio.value);
+  // Validation for payment type checkboxes
+  const paymentCheckboxes = document.querySelectorAll('input[name="paymentType"]');
+  paymentCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      handlePaymentTypeChange();
     });
   });
   
@@ -444,31 +568,42 @@ function updatePaymentButton() {
     return;
   }
   
-  // Verify selected payment type (radio buttons)
-  const paymentRadio = document.querySelector('input[name="paymentType"]:checked');
-  if (!paymentRadio) {
+  // Verify at least 1 payment type selected (checkboxes) - MODIFICADO
+  const creditoChecked = document.getElementById('payment-credito')?.checked;
+  const debitoChecked = document.getElementById('payment-debito')?.checked;
+  const transferenciaChecked = document.getElementById('payment-transferencia')?.checked;
+  
+  const checkedCount = [creditoChecked, debitoChecked, transferenciaChecked].filter(Boolean).length;
+  
+  if (checkedCount < 1) {
     btn.disabled = true;
     btn.style.opacity = '0.5';
     btn.style.cursor = 'not-allowed';
     return;
   }
   
-  const paymentType = paymentRadio.value;
-  
-  // Verify fields according to payment type
+  // Verify fields according to payment types selected
   let allValid = true;
   
-  if (paymentType === 'credito' || paymentType === 'debito') {
+  // If any card type is selected, validate card fields
+  if (creditoChecked || debitoChecked) {
     const cardNumber = document.getElementById('cardNumber');
     const cardExpiry = document.getElementById('cardExpiry');
     const cardCVV = document.getElementById('cardCVV');
     
-    allValid = cardNumber?.value.replace(/\s/g, '').length >= 13 &&
-               /^\d{2}\/\d{2}$/.test(cardExpiry?.value || '') &&
-               /^\d{3,4}$/.test(cardCVV?.value || '');
-  } else if (paymentType === 'transferencia') {
+    const cardValid = cardNumber?.value.replace(/\s/g, '').length >= 13 &&
+                      /^\d{2}\/\d{2}$/.test(cardExpiry?.value || '') &&
+                      /^\d{3,4}$/.test(cardCVV?.value || '');
+    
+    if (!cardValid) allValid = false;
+  }
+  
+  // If transfer is selected, validate account number
+  if (transferenciaChecked) {
     const accountNumber = document.getElementById('accountNumber');
-    allValid = accountNumber?.value.trim().length >= 8;
+    const transferValid = accountNumber?.value.trim().length >= 8;
+    
+    if (!transferValid) allValid = false;
   }
   
   if (allValid) {
@@ -769,20 +904,22 @@ function showCart() {
         
         <div style="display:flex; flex-direction:column; gap:16px;">
           
-          <!-- Payment method options (Radio buttons) -->
+          <!-- Payment method options (Checkboxes - minimum 1 required, maximum 2) -->
           <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:20px;">
+              <p style="margin:0 0 12px 0; font-weight:600; color:var(--text-primary);">Selecciona entre 1 y 2 formas de pago:</p>
+              
               <label style="display:flex; align-items:center; gap:12px; margin-bottom:16px; cursor:pointer;">
-                <input type="radio" name="paymentType" value="credito" onchange="handlePaymentTypeChange('credito')" style="width:18px; height:18px; cursor:pointer;">
+                <input type="checkbox" id="payment-credito" name="paymentType" value="credito" onchange="handlePaymentTypeChange()" style="width:18px; height:18px; cursor:pointer;">
                 <span style="font-size:16px;">Tarjeta de Crédito</span>
               </label>
               
               <label style="display:flex; align-items:center; gap:12px; margin-bottom:16px; cursor:pointer;">
-                <input type="radio" name="paymentType" value="debito" onchange="handlePaymentTypeChange('debito')" style="width:18px; height:18px; cursor:pointer;">
+                <input type="checkbox" id="payment-debito" name="paymentType" value="debito" onchange="handlePaymentTypeChange()" style="width:18px; height:18px; cursor:pointer;">
                 <span style="font-size:16px;">Tarjeta de Débito</span>
               </label>
               
               <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
-                <input type="radio" name="paymentType" value="transferencia" onchange="handlePaymentTypeChange('transferencia')" style="width:18px; height:18px; cursor:pointer;">
+                <input type="checkbox" id="payment-transferencia" name="paymentType" value="transferencia" onchange="handlePaymentTypeChange()" style="width:18px; height:18px; cursor:pointer;">
                 <span style="font-size:16px;">Transferencia Bancaria</span>
               </label>
       
@@ -969,16 +1106,20 @@ function finalizePurchase() {
     }
   }
 
-  // 4) Payment type selected (radio)
-  const paymentRadio = document.querySelector('input[name="paymentType"]:checked');
-  if (!paymentRadio) {
-    alert('Por favor selecciona un método de pago');
+  // 4) Payment types selected (checkboxes - minimum 1, maximum 2) - MODIFICADO
+  const creditoChecked = document.getElementById('payment-credito')?.checked;
+  const debitoChecked = document.getElementById('payment-debito')?.checked;
+  const transferenciaChecked = document.getElementById('payment-transferencia')?.checked;
+  
+  const checkedCount = [creditoChecked, debitoChecked, transferenciaChecked].filter(Boolean).length;
+  
+  if (checkedCount < 1) {
+    alert('Por favor selecciona al menos 1 método de pago');
     return;
   }
-  const paymentType = paymentRadio.value;
 
-  // 5) Payment method fields cannot be empty
-  if (paymentType === 'credito' || paymentType === 'debito') {
+  // 5) Payment method fields cannot be empty for selected payment types
+  if (creditoChecked || debitoChecked) {
     const cardNumber = document.getElementById('cardNumber')?.value?.trim();
     const cardExpiry = document.getElementById('cardExpiry')?.value?.trim();
     const cardCVV = document.getElementById('cardCVV')?.value?.trim();
@@ -996,7 +1137,9 @@ function finalizePurchase() {
       alert('CVV inválido');
       return;
     }
-  } else if (paymentType === 'transferencia') {
+  }
+  
+  if (transferenciaChecked) {
     const account = document.getElementById('accountNumber')?.value?.trim();
     if (!account) {
       alert('Por favor ingresa el número de cuenta para la transferencia');
@@ -1004,19 +1147,20 @@ function finalizePurchase() {
     }
   }
 
-  // Readable names
+  // Readable names for selected payment methods
+  let paymentNames = [];
+  if (creditoChecked) paymentNames.push('Tarjeta de Crédito');
+  if (debitoChecked) paymentNames.push('Tarjeta de Débito');
+  if (transferenciaChecked) paymentNames.push('Transferencia Bancaria');
+  
+  const paymentName = paymentNames.join(', ');
+  
+  // Readable name for shipping
   let shippingName = '';
   switch (shippingType) {
     case 'premium': shippingName = 'Premium 2 a 5 días'; break;
     case 'express': shippingName = 'Express 5 a 8 días'; break;
     case 'standard': shippingName = 'Standard 12 a 15 días'; break;
-  }
-
-  let paymentName = '';
-  switch (paymentType) {
-    case 'credito': paymentName = 'Tarjeta de Crédito'; break;
-    case 'debito': paymentName = 'Tarjeta de Débito'; break;
-    case 'transferencia': paymentName = 'Transferencia Bancaria'; break;
   }
   
   // Show success modal
