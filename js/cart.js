@@ -29,6 +29,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
   } else {
     showEmptyCart();
   }
+
+  const paymentSelect = document.getElementById('paymentMethod');
+  if (paymentSelect) {
+    paymentSelect.addEventListener('change', showPaymentFields);
+    showPaymentFields();
+  }
 });
 
 // ==================== CALCULAR TOTALES ====================
@@ -293,6 +299,29 @@ function showCart() {
               <option value="transferencia">Transferencia Bancaria</option>
               <option value="efectivo">Efectivo contra entrega</option>
             </select>
+            <!-- Campos de pago dinámicos (ocultos por defecto) -->
+            <div id="cardFields" class="payment-fields" style="display:none; margin-top:12px;">
+              <div class="form-field">
+                <label class="field-label">Número de Tarjeta *</label>
+                <input id="cardNumber" type="text" maxlength="19" class="field-input" placeholder="1234 5678 9012 3456" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
+              </div>
+              <div class="field-row">
+                <div class="form-field" style="flex:1;">
+                  <label class="field-label">Fecha de Vencimiento *</label>
+                  <input id="cardExpiry" type="text" maxlength="5" class="field-input" placeholder="MM/YY" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
+                </div>
+                <div class="form-field" style="width:120px;">
+                  <label class="field-label">CVV *</label>
+                  <input id="cardCVV" type="text" maxlength="4" class="field-input" placeholder="123" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
+                </div>
+              </div>
+            </div>
+            <div id="transferFields" class="payment-fields" style="display:none; margin-top:12px;">
+              <div class="form-field">
+                <label class="field-label">Número de Cuenta *</label>
+                <input id="accountNumber" type="text" class="field-input" placeholder="Ingrese número de cuenta" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
+              </div>
+            </div>
           </div>
 
           </div>
@@ -329,47 +358,129 @@ function showCart() {
   cartInfo.innerHTML = html;
   
   // Mostrar el paso actual
-  goToStep(currentStep);
+    // Si el HTML generado incluye el select de pago, asegurar listener para togglear campos
+    const dynamicPaymentSelect = document.getElementById('paymentMethod');
+    if (dynamicPaymentSelect) {
+      dynamicPaymentSelect.addEventListener('change', showPaymentFields);
+      // Inicializar estado de campos según valor actual
+      showPaymentFields();
+    }
+
+    // Mostrar el paso actual
+    goToStep(currentStep);
 }
 
 // Función para finalizar compra (modificada)
 function finalizePurchase() {
+  // --- Validaciones previas ---
+  // 1) Dirección: validar campos (si están en DOM) o en localStorage
+  const deptEl = document.getElementById('departamento');
+  const locEl = document.getElementById('localidad');
+  const calleEl = document.getElementById('calle');
+  const numEl = document.getElementById('numero');
+  const esquinaEl = document.getElementById('esquina');
+
+  let departamento = deptEl?.value?.trim();
+  let localidad = locEl?.value?.trim();
+  let calle = calleEl?.value?.trim();
+  let numero = numEl?.value?.trim();
+  let esquina = esquinaEl?.value?.trim();
+
+  if (!departamento || !localidad || !calle || !numero || !esquina) {
+    // intentar leer shippingData en localStorage
+    const saved = localStorage.getItem('shippingData');
+    if (saved) {
+      try {
+        const sd = JSON.parse(saved);
+        departamento = departamento || sd.departamento;
+        localidad = localidad || sd.localidad;
+        calle = calle || sd.calle;
+        numero = numero || sd.numero;
+        esquina = esquina || sd.esquina;
+      } catch (e) {
+        // ignore
+      }
+    }
+  }
+
+  if (!departamento || !localidad || !calle || !numero || !esquina) {
+    alert('Por favor completa todos los campos de dirección antes de finalizar la compra.');
+    return;
+  }
+
+  // 2) Forma de envío: debe estar seleccionada (no asumir un valor por defecto)
+  const shippingRadio = document.querySelector('input[name="shippingType"]:checked');
+  if (!shippingRadio) {
+    alert('Por favor selecciona un tipo de envío');
+    return;
+  }
+  const shippingType = shippingRadio.value;
+
+  // 3) Cantidades: cada producto debe tener count > 0
+  if (!Array.isArray(cartProducts) || cartProducts.length === 0) {
+    alert('No hay productos en el carrito');
+    return;
+  }
+  for (const p of cartProducts) {
+    const cnt = Number(p.count);
+    if (!Number.isFinite(cnt) || cnt <= 0) {
+      alert('Asegúrate de que la cantidad de cada producto sea mayor a 0');
+      return;
+    }
+  }
+
+  // 4) Forma de pago seleccionada
   const paymentMethod = document.getElementById('paymentMethod')?.value;
-  
   if (!paymentMethod) {
     alert('Por favor selecciona un método de pago');
     return;
   }
-  
-  const totals = calculateTotals();
-  
-  // Obtener tipo de envío seleccionado
-  const shippingType = document.querySelector('input[name="shippingType"]:checked')?.value || 'premium';
-  let shippingName = '';
-  
-  switch(shippingType) {
-    case 'premium':
-      shippingName = 'Premium 2 a 5 días';
-      break;
-    case 'express':
-      shippingName = 'Express 5 a 8 días';
-      break;
-    case 'standard':
-      shippingName = 'Standard 12 a 15 días';
-      break;
+
+  // 5) Campos de la forma de pago seleccionada no pueden estar vacíos
+  if (paymentMethod === 'tarjeta') {
+    const cardNumber = document.getElementById('cardNumber')?.value?.trim();
+    const cardExpiry = document.getElementById('cardExpiry')?.value?.trim();
+    const cardCVV = document.getElementById('cardCVV')?.value?.trim();
+
+    if (!cardNumber || !cardExpiry || !cardCVV) {
+      alert('Por favor completa todos los campos de la tarjeta');
+      return;
+    }
+    // Validaciones simples: expiry MM/YY y CVV numérico
+    if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+      alert('Formato de fecha de vencimiento inválido. Use MM/YY');
+      return;
+    }
+    if (!/^\d{3,4}$/.test(cardCVV)) {
+      alert('CVV inválido');
+      return;
+    }
+  } else if (paymentMethod === 'transferencia') {
+    const account = document.getElementById('accountNumber')?.value?.trim();
+    if (!account) {
+      alert('Por favor ingresa el número de cuenta para la transferencia');
+      return;
+    }
+  } else if (paymentMethod === 'efectivo') {
+    // efectivo no requiere campos extra; en caso de requerir alguno se validaría aquí
   }
-  
+
+  // Si todo está OK, proceder con el flujo ficticio de compra
+  const total = cartProducts.reduce((sum, p) => sum + Number(p.cost) * Number(p.count), 0);
+  const finalTotal = total + currentShippingCost;
+
+  let shippingName = '';
+  switch (shippingType) {
+    case 'premium': shippingName = 'Premium 2 a 5 días'; break;
+    case 'express': shippingName = 'Express 5 a 8 días'; break;
+    case 'standard': shippingName = 'Standard 12 a 15 días'; break;
+  }
+
   let paymentName = '';
-  switch(paymentMethod) {
-    case 'tarjeta':
-      paymentName = 'Tarjeta de Crédito/Débito';
-      break;
-    case 'transferencia':
-      paymentName = 'Transferencia Bancaria';
-      break;
-    case 'efectivo':
-      paymentName = 'Efectivo contra entrega';
-      break;
+  switch (paymentMethod) {
+    case 'tarjeta': paymentName = 'Tarjeta de Crédito/Débito'; break;
+    case 'transferencia': paymentName = 'Transferencia Bancaria'; break;
+    case 'efectivo': paymentName = 'Efectivo contra entrega'; break;
   }
   
   alert(`¡Compra finalizada con éxito!\n\nEnvío: ${shippingName}\nMétodo de pago: ${paymentName}\nTotal: USD ${totals.total.toFixed(2)}\n\n¡Gracias por tu compra!`);
@@ -393,6 +504,12 @@ function showEmptyCart() {
       </div>
     </div>`;
   }
+
+  const cartTotalEl = document.getElementById("cartTotal");
+  if (cartTotalEl) cartTotalEl.style.display = "none";
+
+  const actionButtonsEl = document.getElementById("actionButtons");
+  if (actionButtonsEl) actionButtonsEl.style.display = "none";
 }
 
 // Función para aumentar cantidad (MODIFICADA)
@@ -448,4 +565,21 @@ function saveCart() {
 // Función para continuar comprando
 function continueShopping() {
   window.location.href = "categories.html";
+}
+
+function showPaymentFields() {
+  const method = document.getElementById('paymentMethod')?.value;
+  const cardFields = document.getElementById('cardFields');
+  const transferFields = document.getElementById('transferFields');
+
+  if (!cardFields || !transferFields) return;
+
+  cardFields.style.display = 'none';
+  transferFields.style.display = 'none';
+
+  if (method === 'tarjeta') {
+    cardFields.style.display = 'block';
+  } else if (method === 'transferencia') {
+    transferFields.style.display = 'block';
+  }
 }
