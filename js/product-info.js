@@ -1,38 +1,40 @@
-document.addEventListener("DOMContentLoaded", function(e){
+document.addEventListener("DOMContentLoaded", function (e) {
   loadSavedTheme();
-})
+});
 
 // ==================== FUNCIÓN COMPRAR ====================
 function agregarAlCarrito(producto) {
-    // Obtener carrito actual del localStorage
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Crear objeto con info del producto
-    const productoCarrito = {
-        id: producto.id,
-        name: producto.name,
-        cost: producto.cost,
-        currency: producto.currency,
-        image: producto.images[0], // Primera imagen
-        count: 1 // Cantidad inicial
-    };
-    
-    // Verificar si el producto ya está en el carrito
-    const indexExistente = cart.findIndex(item => item.id === productoCarrito.id);
-    
-    if (indexExistente !== -1) {
-        // Si ya existe, incrementar cantidad
-        cart[indexExistente].count += 1;
-    } else {
-        // Si no existe, agregarlo
-        cart.push(productoCarrito);
-    }
-    
-    // Guardar carrito actualizado en localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));
-    
-    // Navegar a cart.html
-    window.location.href = 'cart.html';
+  // Obtener carrito actual del localStorage
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // Crear objeto con info del producto
+  const productoCarrito = {
+    id: producto.id,
+    name: producto.name,
+    cost: producto.cost,
+    currency: producto.currency,
+    image: producto.images[0], // Primera imagen
+    count: 1, // Cantidad inicial
+  };
+
+  // Verificar si el producto ya está en el carrito
+  const indexExistente = cart.findIndex(
+    (item) => item.id === productoCarrito.id
+  );
+
+  if (indexExistente !== -1) {
+    // Si ya existe, incrementar cantidad
+    cart[indexExistente].count += 1;
+  } else {
+    // Si no existe, agregarlo
+    cart.push(productoCarrito);
+  }
+
+  // Guardar carrito actualizado en localStorage
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Navegar a cart.html
+  window.location.href = "cart.html";
 }
 
 // ==================== PRODUCT DATA ====================
@@ -44,25 +46,35 @@ let productData; // ← VARIABLE GLOBAL PARA EL PRODUCTO
 
 // ==================== FETCH PRODUCT ====================
 fetch(productUrl)
-  .then(res => res.json())
-  .then(product => {
+  .then((res) => res.json())
+  .then((product) => {
     productData = product; // ← GUARDAR PRODUCTO GLOBALMENTE
-    
+
     document.querySelector("h4").textContent = product.name;
-    document.querySelector(".precio").textContent = `Precio: ${product.currency} ${product.cost}`;
-    document.querySelector(".vendidos").textContent = `Cantidad vendida: ${product.soldCount}`;
-    document.querySelector(".descripción-info").textContent = product.description;
+    document.querySelector(
+      ".precio"
+    ).textContent = `Precio: ${product.currency} ${product.cost}`;
+    document.querySelector(
+      ".vendidos"
+    ).textContent = `Cantidad vendida: ${product.soldCount}`;
+    document.querySelector(".descripción-info").textContent =
+      product.description;
 
     const gallery = document.querySelector(".galeria-imagenes");
-    product.images.forEach(img => gallery.innerHTML += `<img src="${img}" alt="Imagen del producto">`);
+    product.images.forEach(
+      (img) =>
+        (gallery.innerHTML += `<img src="${img}" alt="Imagen del producto">`)
+    );
 
-    const relatedContainer = document.querySelector(".content-related-products");
+    const relatedContainer = document.querySelector(
+      ".content-related-products"
+    );
     relatedContainer.innerHTML = `
       <div class="title-related-products">Productos relacionados</div>
       <div class="products-wrapper"></div>
     `;
     const wrapper = relatedContainer.querySelector(".products-wrapper");
-    product.relatedProducts.forEach(p => {
+    product.relatedProducts.forEach((p) => {
       wrapper.innerHTML += `
         <div class="product-item d-flex flex-column align-items-center pt-3" onclick="selectRelatedProduct(${p.id})">
           <img src="${p.image}" alt="Imagen del producto">
@@ -70,29 +82,33 @@ fetch(productUrl)
         </div>
       `;
     });
-    
+
     // ← AGREGAR LISTENER DEL BOTÓN COMPRAR
-    document.getElementById('btnComprar').addEventListener('click', function() {
+    document
+      .getElementById("btnComprar")
+      .addEventListener("click", function () {
         agregarAlCarrito(productData);
-    });
+      });
   });
 
 // ==================== FETCH COMMENTS ====================
 let allRatings = []; // guardará todas las calificaciones reales
-const commentsContainer = document.querySelector(".featured-reviews .comments-wrapper");
+const commentsContainer = document.querySelector(
+  ".featured-reviews .comments-wrapper"
+);
 const averageContainer = document.getElementById("average-note");
 
 fetch(commentsUrl)
-  .then(res => res.json())
-  .then(data => {
-    if(data.length) {
-      allRatings = data.map(c => c.score);
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.length) {
+      allRatings = data.map((c) => c.score);
       updateAverageRating();
     } else {
       averageContainer.innerHTML = `<p class="text-white fw-bold fs-5">Sin comentarios</p>`;
     }
 
-    data.forEach(c => {
+    data.forEach((c) => {
       const date = new Date(c.dateTime).toLocaleDateString("es-ES");
       const commentDiv = document.createElement("div");
       commentDiv.classList.add("comments-wrapper");
@@ -119,16 +135,16 @@ function selectRelatedProduct(id) {
 
 function createStars(score) {
   let stars = "";
-  for(let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 5; i++) {
     stars += i <= score ? "★ " : '<span class="star inactive">★</span> ';
   }
   return stars.trim();
 }
 
 function updateStarsVisual(score) {
-  stars.forEach(star => {
+  stars.forEach((star) => {
     const value = parseInt(star.dataset.value);
-    if(value <= score) {
+    if (value <= score) {
       star.classList.remove("inactive");
       star.classList.add("active");
     } else {
@@ -139,8 +155,8 @@ function updateStarsVisual(score) {
 }
 
 function calculateAverage(scores) {
-  if(!scores.length) return 0;
-  const sum = scores.reduce((a,b) => a+b,0);
+  if (!scores.length) return 0;
+  const sum = scores.reduce((a, b) => a + b, 0);
   return Math.trunc(sum / scores.length);
 }
 
@@ -163,10 +179,11 @@ function updateAverageRating() {
 }
 
 function renderStars(container, rating) {
-  if(!container) return;
+  if (!container) return;
   container.innerHTML = "";
-  for(let i = 1; i <= 5; i++) {
-    container.innerHTML += i <= rating ? "★ " : '<span class="star inactive">★</span> ';
+  for (let i = 1; i <= 5; i++) {
+    container.innerHTML +=
+      i <= rating ? "★ " : '<span class="star inactive">★</span> ';
   }
 }
 
@@ -176,7 +193,7 @@ const stars = document.querySelectorAll("#starRating .star");
 let selectedScore = 0;
 
 // Selección de calificación
-stars.forEach(star => {
+stars.forEach((star) => {
   star.addEventListener("click", () => {
     selectedScore = parseInt(star.dataset.value);
     updateStarsVisual(selectedScore);
@@ -185,8 +202,8 @@ stars.forEach(star => {
 
 btnSend.addEventListener("click", () => {
   const commentText = textarea.value.trim();
-  if(!commentText) return alert("Debes escribir un comentario");
-  if(selectedScore === 0) return alert("Debes seleccionar una calificación");
+  if (!commentText) return alert("Debes escribir un comentario");
+  if (selectedScore === 0) return alert("Debes seleccionar una calificación");
 
   // Usuario logeado desde localStorage
   let loggedUser = localStorage.getItem("username") || "Usuario";

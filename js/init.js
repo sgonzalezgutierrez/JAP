@@ -8,47 +8,46 @@ const CART_INFO_URL = `${API_URL}/user_cart/`;
 const CART_BUY_URL = `${API_URL}/cart/buy.json`;
 const EXT_TYPE = ".json";
 
-let showSpinner = function(){
+let showSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "block";
-}
+};
 
-let hideSpinner = function(){
+let hideSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "none";
-}
+};
 
-let getJSONData = function(url){
-    let result = {};
-    showSpinner();
-    return fetch(url)
-    .then(response => {
+let getJSONData = function (url) {
+  let result = {};
+  showSpinner();
+  return fetch(url)
+    .then((response) => {
       if (response.ok) {
         return response.json();
-      }else{
+      } else {
         throw Error(response.statusText);
       }
     })
-    .then(function(response) {
-          result.status = 'ok';
-          result.data = response;
-          hideSpinner();
-          return result;
+    .then(function (response) {
+      result.status = "ok";
+      result.data = response;
+      hideSpinner();
+      return result;
     })
-    .catch(function(error) {
-        result.status = 'error';
-        result.data = error;
-        hideSpinner();
-        return result;
+    .catch(function (error) {
+      result.status = "error";
+      result.data = error;
+      hideSpinner();
+      return result;
     });
-}
+};
 
-if (localStorage.getItem('loggedIn') !== 'true') {
-  window.location.assign('login.html');
+if (localStorage.getItem("loggedIn") !== "true") {
+  window.location.assign("login.html");
 }
 
 function loadSavedTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-mode');
-    }
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+  }
 }
-
