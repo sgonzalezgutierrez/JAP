@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
     showEmptyCart();
   }
 
-  const paymentSelect = document.getElementById('paymentMethod');
+  const paymentSelect = document.getElementById("paymentMethod");
   if (paymentSelect) {
-    paymentSelect.addEventListener('change', showPaymentFields);
+    paymentSelect.addEventListener("change", showPaymentFields);
     showPaymentFields();
   }
 });
@@ -54,20 +54,18 @@ function saveCart() {
 
 // Function to continue shopping
 function continueShopping() {
-  window.location.href = 'index.html';
+  window.location.href = "index.html";
 }
 
 // Function to remove a product from cart
 function removeItem(index) {
-  if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
-    cartProducts.splice(index, 1);
-    saveCart();
-    
-    if (cartProducts.length === 0) {
-      showEmptyCart();
-    } else {
-      showCart();
-    }
+  cartProducts.splice(index, 1);
+  saveCart();
+
+  if (cartProducts.length === 0) {
+    showEmptyCart();
+  } else {
+    showCart();
   }
 }
 
@@ -91,106 +89,123 @@ function decreaseQuantity(index) {
 function calculateTotals() {
   // Calculate subtotal (sum of all products)
   const subtotal = cartProducts.reduce((sum, product) => {
-    return sum + (product.cost * product.count);
+    return sum + product.cost * product.count;
   }, 0);
-  
+
   // Get selected shipping type from SELECT
-  const shippingMethodElement = document.getElementById('shippingMethod');
+  const shippingMethodElement = document.getElementById("shippingMethod");
   let shippingPercentage = 0; // No shipping by default
-  
+
   if (shippingMethodElement && shippingMethodElement.value) {
     const shippingType = shippingMethodElement.value;
-    if (shippingType === 'express') {
+    if (shippingType === "express") {
       shippingPercentage = 0.07; // 7%
-    } else if (shippingType === 'standard') {
+    } else if (shippingType === "standard") {
       shippingPercentage = 0.05; // 5%
-    } else if (shippingType === 'premium') {
+    } else if (shippingType === "premium") {
       shippingPercentage = 0.15; // 15%
     }
   }
-  
+
   // Calculate shipping cost
   const shippingCost = subtotal * shippingPercentage;
-  
+
   // Calculate total
   const total = subtotal + shippingCost;
-  
+
   return {
     subtotal: subtotal,
     shippingCost: shippingCost,
-    total: total
+    total: total,
   };
 }
 
 // ==================== UPDATE DOM WITH TOTALS ====================
 function updateTotalsDisplay() {
   const totals = calculateTotals();
-  
+
   // Update DOM elements in step 3
-  const subtotalElement = document.getElementById('summarySubtotal');
-  const costElement = document.getElementById('summaryCost');
-  const totalElement = document.getElementById('summaryTotal');
-  
-  if (subtotalElement) subtotalElement.textContent = `USD ${totals.subtotal.toFixed(2)}`;
-  if (costElement) costElement.textContent = `USD ${totals.shippingCost.toFixed(2)}`;
+  const subtotalElement = document.getElementById("summarySubtotal");
+  const costElement = document.getElementById("summaryCost");
+  const totalElement = document.getElementById("summaryTotal");
+
+  if (subtotalElement)
+    subtotalElement.textContent = `USD ${totals.subtotal.toFixed(2)}`;
+  if (costElement)
+    costElement.textContent = `USD ${totals.shippingCost.toFixed(2)}`;
   if (totalElement) totalElement.textContent = `USD ${totals.total.toFixed(2)}`;
 }
 
 // Function to change step
 function goToStep(step) {
   currentStep = step;
-  
+
   // Hide all steps
-  const step1 = document.getElementById('step1');
-  const step2 = document.getElementById('step2');
-  const step3 = document.getElementById('step3');
-  
-  if (step1) step1.style.display = 'none';
-  if (step2) step2.style.display = 'none';
-  if (step3) step3.style.display = 'none';
-  
+  const step1 = document.getElementById("step1");
+  const step2 = document.getElementById("step2");
+  const step3 = document.getElementById("step3");
+
+  if (step1) step1.style.display = "none";
+  if (step2) step2.style.display = "none";
+  if (step3) step3.style.display = "none";
+
   // Change title according to step
-  const pageTitle = document.querySelector('.profile-header h1');
+  const pageTitle = document.querySelector(".profile-header h1");
   if (pageTitle) {
     if (step === 1) {
-      pageTitle.textContent = 'Carrito de compras';
+      pageTitle.textContent = "Carrito de compras";
     } else if (step === 2) {
-      pageTitle.textContent = 'Dirección de Envío';
+      pageTitle.textContent = "Dirección de Envío";
     } else if (step === 3) {
-      pageTitle.textContent = 'Tipo de Envío';
+      pageTitle.textContent = "Tipo de Envío";
     }
   }
-  
+
   // Show current step
   if (step === 1 && step1) {
-    step1.style.display = 'flex';
+    step1.style.display = "flex";
   } else if (step === 2 && step2) {
-    step2.style.display = 'flex';
+    step2.style.display = "flex";
     setupShippingValidation();
   } else if (step === 3 && step3) {
-    step3.style.display = 'flex';
+    step3.style.display = "flex";
     updateTotalsDisplay();
     setupPaymentValidation();
   }
 }
 
 // ==================== NEW FUNCTIONS FOR CHANGE HANDLING ====================
-function handlePaymentTypeChange(type) {
-  // Update fields according to selected payment type
-  const cardFields = document.getElementById('cardFields');
-  const transferFields = document.getElementById('transferFields');
-  
+function handlePaymentTypeChange(type, isChecked) {
+  const cardFields = document.getElementById("cardFields");
+  const transferFields = document.getElementById("transferFields");
+
   if (!cardFields || !transferFields) return;
-  
-  cardFields.style.display = 'none';
-  transferFields.style.display = 'none';
-  
-  if (type === 'credito' || type === 'debito') {
-    cardFields.style.display = 'block';
-  } else if (type === 'transferencia') {
-    transferFields.style.display = 'block';
+
+  // Obtener todos los checkboxes marcados
+  const creditoChecked = document.querySelector(
+    'input[value="credito"]'
+  )?.checked;
+  const debitoChecked = document.querySelector(
+    'input[value="debito"]'
+  )?.checked;
+  const transferenciaChecked = document.querySelector(
+    'input[value="transferencia"]'
+  )?.checked;
+
+  // Mostrar campos de tarjeta si al menos uno está marcado
+  if (creditoChecked || debitoChecked) {
+    cardFields.style.display = "block";
+  } else {
+    cardFields.style.display = "none";
   }
-  
+
+  // Mostrar campos de transferencia si está marcado
+  if (transferenciaChecked) {
+    transferFields.style.display = "block";
+  } else {
+    transferFields.style.display = "none";
+  }
+
   updatePaymentButton();
 }
 
@@ -201,31 +216,31 @@ function handleShippingChange() {
 
 // ==================== REAL-TIME VALIDATION - STEP 2 ====================
 function setupShippingValidation() {
-  const fields = ['departamento', 'localidad', 'calle', 'numero', 'esquina'];
-  
-  fields.forEach(fieldId => {
+  const fields = ["departamento", "localidad", "calle", "numero", "esquina"];
+
+  fields.forEach((fieldId) => {
     const input = document.getElementById(fieldId);
     if (input) {
       // Add real-time validation
-      input.addEventListener('input', () => {
+      input.addEventListener("input", () => {
         validateShippingField(fieldId);
         updateShippingButton();
       });
-      
+
       // Validate on blur
-      input.addEventListener('blur', () => {
+      input.addEventListener("blur", () => {
         validateShippingField(fieldId);
       });
-      
+
       // Restriction for "numero" field - only numbers
-      if (fieldId === 'numero') {
-        input.addEventListener('input', (e) => {
-          e.target.value = e.target.value.replace(/[^0-9]/g, '');
+      if (fieldId === "numero") {
+        input.addEventListener("input", (e) => {
+          e.target.value = e.target.value.replace(/[^0-9]/g, "");
         });
       }
     }
   });
-  
+
   // Initial validation
   updateShippingButton();
 }
@@ -233,51 +248,51 @@ function setupShippingValidation() {
 function validateShippingField(fieldId) {
   const input = document.getElementById(fieldId);
   const errorDiv = document.getElementById(`${fieldId}-error`);
-  
+
   if (!input) return true;
-  
+
   const value = input.value.trim();
-  const isEmpty = value === '';
-  
+  const isEmpty = value === "";
+
   // Update input style
   if (isEmpty) {
-    input.style.borderColor = '#ef4444';
-    input.style.borderWidth = '2px';
+    input.style.borderColor = "#ef4444";
+    input.style.borderWidth = "2px";
   } else {
-    input.style.borderColor = 'var(--input-border)';
-    input.style.borderWidth = '1px';
+    input.style.borderColor = "var(--input-border)";
+    input.style.borderWidth = "1px";
   }
-  
+
   // Show/hide error message
   if (errorDiv) {
     if (isEmpty) {
-      errorDiv.style.display = 'flex';
+      errorDiv.style.display = "flex";
     } else {
-      errorDiv.style.display = 'none';
+      errorDiv.style.display = "none";
     }
   }
-  
+
   return !isEmpty;
 }
 
 function updateShippingButton() {
-  const btn = document.getElementById('shippingNextBtn');
+  const btn = document.getElementById("shippingNextBtn");
   if (!btn) return;
-  
-  const fields = ['departamento', 'localidad', 'calle', 'numero', 'esquina'];
-  const allValid = fields.every(fieldId => {
+
+  const fields = ["departamento", "localidad", "calle", "numero", "esquina"];
+  const allValid = fields.every((fieldId) => {
     const input = document.getElementById(fieldId);
-    return input && input.value.trim() !== '';
+    return input && input.value.trim() !== "";
   });
-  
+
   if (allValid) {
     btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
   } else {
     btn.disabled = true;
-    btn.style.opacity = '0.5';
-    btn.style.cursor = 'not-allowed';
+    btn.style.opacity = "0.5";
+    btn.style.cursor = "not-allowed";
   }
 }
 
@@ -285,200 +300,209 @@ function updateShippingButton() {
 function setupPaymentValidation() {
   // Validation for payment type radio buttons
   const paymentRadios = document.querySelectorAll('input[name="paymentType"]');
-  paymentRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
+  paymentRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
       handlePaymentTypeChange(radio.value);
     });
   });
-  
+
   // Shipping type select
-  const shippingSelect = document.getElementById('shippingMethod');
+  const shippingSelect = document.getElementById("shippingMethod");
   if (shippingSelect) {
-    shippingSelect.addEventListener('change', handleShippingChange);
+    shippingSelect.addEventListener("change", handleShippingChange);
   }
-  
+
   // Validation for card fields
-  const cardNumber = document.getElementById('cardNumber');
-  const cardExpiry = document.getElementById('cardExpiry');
-  const cardCVV = document.getElementById('cardCVV');
-  
+  const cardNumber = document.getElementById("cardNumber");
+  const cardExpiry = document.getElementById("cardExpiry");
+  const cardCVV = document.getElementById("cardCVV");
+
   if (cardNumber) {
-    cardNumber.addEventListener('input', (e) => {
+    cardNumber.addEventListener("input", (e) => {
       // Only numbers and spaces
-      e.target.value = e.target.value.replace(/[^0-9\s]/g, '');
+      e.target.value = e.target.value.replace(/[^0-9\s]/g, "");
       // Format: XXXX XXXX XXXX XXXX
-      let value = e.target.value.replace(/\s/g, '');
-      let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+      let value = e.target.value.replace(/\s/g, "");
+      let formatted = value.match(/.{1,4}/g)?.join(" ") || value;
       e.target.value = formatted;
-      validatePaymentField('cardNumber');
+      validatePaymentField("cardNumber");
       updatePaymentButton();
     });
-    cardNumber.addEventListener('blur', () => validatePaymentField('cardNumber'));
+    cardNumber.addEventListener("blur", () =>
+      validatePaymentField("cardNumber")
+    );
   }
-  
+
   if (cardExpiry) {
-    cardExpiry.addEventListener('input', (e) => {
+    cardExpiry.addEventListener("input", (e) => {
       // Only numbers and slash
-      e.target.value = e.target.value.replace(/[^0-9\/]/g, '');
+      e.target.value = e.target.value.replace(/[^0-9\/]/g, "");
       // Auto-add slash after MM
-      let value = e.target.value.replace(/\//g, '');
+      let value = e.target.value.replace(/\//g, "");
       if (value.length >= 2) {
-        e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        e.target.value = value.slice(0, 2) + "/" + value.slice(2, 4);
       }
-      validatePaymentField('cardExpiry');
+      validatePaymentField("cardExpiry");
       updatePaymentButton();
     });
-    cardExpiry.addEventListener('blur', () => validatePaymentField('cardExpiry'));
+    cardExpiry.addEventListener("blur", () =>
+      validatePaymentField("cardExpiry")
+    );
   }
-  
+
   if (cardCVV) {
-    cardCVV.addEventListener('input', (e) => {
+    cardCVV.addEventListener("input", (e) => {
       // Only numbers
-      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-      validatePaymentField('cardCVV');
+      e.target.value = e.target.value.replace(/[^0-9]/g, "");
+      validatePaymentField("cardCVV");
       updatePaymentButton();
     });
-    cardCVV.addEventListener('blur', () => validatePaymentField('cardCVV'));
+    cardCVV.addEventListener("blur", () => validatePaymentField("cardCVV"));
   }
-  
+
   // Validation for transfer
-  const accountNumber = document.getElementById('accountNumber');
+  const accountNumber = document.getElementById("accountNumber");
   if (accountNumber) {
-    accountNumber.addEventListener('input', (e) => {
+    accountNumber.addEventListener("input", (e) => {
       // Only numbers
-      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-      validatePaymentField('accountNumber');
+      e.target.value = e.target.value.replace(/[^0-9]/g, "");
+      validatePaymentField("accountNumber");
       updatePaymentButton();
     });
-    accountNumber.addEventListener('blur', () => validatePaymentField('accountNumber'));
+    accountNumber.addEventListener("blur", () =>
+      validatePaymentField("accountNumber")
+    );
   }
-  
+
   updatePaymentButton();
 }
 
 function validatePaymentField(fieldId) {
   const input = document.getElementById(fieldId);
   const errorDiv = document.getElementById(`${fieldId}-error`);
-  
+
   if (!input) return true;
-  
+
   const value = input.value.trim();
   let isValid = true;
-  let errorMessage = '';
-  
+  let errorMessage = "";
+
   // Specific validations
-  if (fieldId === 'cardNumber') {
-    const cleanNumber = value.replace(/\s/g, '');
-    if (cleanNumber === '') {
+  if (fieldId === "cardNumber") {
+    const cleanNumber = value.replace(/\s/g, "");
+    if (cleanNumber === "") {
       isValid = false;
-      errorMessage = 'El número de tarjeta es requerido';
+      errorMessage = "El número de tarjeta es requerido";
     } else if (cleanNumber.length < 13 || cleanNumber.length > 19) {
       isValid = false;
-      errorMessage = 'Número de tarjeta inválido';
+      errorMessage = "Número de tarjeta inválido";
     }
-  } else if (fieldId === 'cardExpiry') {
-    if (value === '') {
+  } else if (fieldId === "cardExpiry") {
+    if (value === "") {
       isValid = false;
-      errorMessage = 'La fecha de vencimiento es requerida';
+      errorMessage = "La fecha de vencimiento es requerida";
     } else if (!/^\d{2}\/\d{2}$/.test(value)) {
       isValid = false;
-      errorMessage = 'Formato inválido (MM/YY)';
+      errorMessage = "Formato inválido (MM/YY)";
     }
-  } else if (fieldId === 'cardCVV') {
-    if (value === '') {
+  } else if (fieldId === "cardCVV") {
+    if (value === "") {
       isValid = false;
-      errorMessage = 'El CVV es requerido';
+      errorMessage = "El CVV es requerido";
     } else if (!/^\d{3,4}$/.test(value)) {
       isValid = false;
-      errorMessage = 'CVV inválido (3-4 dígitos)';
+      errorMessage = "CVV inválido (3-4 dígitos)";
     }
-  } else if (fieldId === 'accountNumber') {
-    if (value === '') {
+  } else if (fieldId === "accountNumber") {
+    if (value === "") {
       isValid = false;
-      errorMessage = 'El número de cuenta es requerido';
+      errorMessage = "El número de cuenta es requerido";
     } else if (value.length < 8) {
       isValid = false;
-      errorMessage = 'Número de cuenta inválido';
+      errorMessage = "Número de cuenta inválido";
     }
   }
-  
+
   // Update input style
   if (!isValid) {
-    input.style.borderColor = '#ef4444';
-    input.style.borderWidth = '2px';
+    input.style.borderColor = "#ef4444";
+    input.style.borderWidth = "2px";
   } else {
-    input.style.borderColor = 'var(--input-border)';
-    input.style.borderWidth = '1px';
+    input.style.borderColor = "var(--input-border)";
+    input.style.borderWidth = "1px";
   }
-  
+
   // Show/hide error message
   if (errorDiv) {
     if (!isValid) {
       errorDiv.textContent = errorMessage;
-      errorDiv.style.display = 'flex';
+      errorDiv.style.display = "flex";
     } else {
-      errorDiv.style.display = 'none';
+      errorDiv.style.display = "none";
     }
   }
-  
+
   return isValid;
 }
 
 function updatePaymentButton() {
-  const btn = document.getElementById('finalizeBtn');
+  const btn = document.getElementById("finalizeBtn");
   if (!btn) return;
-  
+
   // Verify selected shipping type (now a select)
-  const shippingSelect = document.getElementById('shippingMethod');
+  const shippingSelect = document.getElementById("shippingMethod");
   if (!shippingSelect || !shippingSelect.value) {
     btn.disabled = true;
-    btn.style.opacity = '0.5';
-    btn.style.cursor = 'not-allowed';
+    btn.style.opacity = "0.5";
+    btn.style.cursor = "not-allowed";
     return;
   }
-  
+
   // Verify selected payment type (radio buttons)
-  const paymentRadio = document.querySelector('input[name="paymentType"]:checked');
+  const paymentRadio = document.querySelector(
+    'input[name="paymentType"]:checked'
+  );
   if (!paymentRadio) {
     btn.disabled = true;
-    btn.style.opacity = '0.5';
-    btn.style.cursor = 'not-allowed';
+    btn.style.opacity = "0.5";
+    btn.style.cursor = "not-allowed";
     return;
   }
-  
+
   const paymentType = paymentRadio.value;
-  
+
   // Verify fields according to payment type
   let allValid = true;
-  
-  if (paymentType === 'credito' || paymentType === 'debito') {
-    const cardNumber = document.getElementById('cardNumber');
-    const cardExpiry = document.getElementById('cardExpiry');
-    const cardCVV = document.getElementById('cardCVV');
-    
-    allValid = cardNumber?.value.replace(/\s/g, '').length >= 13 &&
-               /^\d{2}\/\d{2}$/.test(cardExpiry?.value || '') &&
-               /^\d{3,4}$/.test(cardCVV?.value || '');
-  } else if (paymentType === 'transferencia') {
-    const accountNumber = document.getElementById('accountNumber');
+
+  if (paymentType === "credito" || paymentType === "debito") {
+    const cardNumber = document.getElementById("cardNumber");
+    const cardExpiry = document.getElementById("cardExpiry");
+    const cardCVV = document.getElementById("cardCVV");
+
+    allValid =
+      cardNumber?.value.replace(/\s/g, "").length >= 13 &&
+      /^\d{2}\/\d{2}$/.test(cardExpiry?.value || "") &&
+      /^\d{3,4}$/.test(cardCVV?.value || "");
+  } else if (paymentType === "transferencia") {
+    const accountNumber = document.getElementById("accountNumber");
     allValid = accountNumber?.value.trim().length >= 8;
   }
-  
+
   if (allValid) {
     btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
   } else {
     btn.disabled = true;
-    btn.style.opacity = '0.5';
-    btn.style.cursor = 'not-allowed';
+    btn.style.opacity = "0.5";
+    btn.style.cursor = "not-allowed";
   }
 }
 
 // ==================== SUCCESS MODAL ====================
 function showSuccessModal(totals, shippingName, paymentName) {
   // Create overlay
-  const overlay = document.createElement('div');
+  const overlay = document.createElement("div");
   overlay.style.cssText = `
     position: fixed;
     top: 0;
@@ -492,9 +516,9 @@ function showSuccessModal(totals, shippingName, paymentName) {
     z-index: 10000;
     animation: fadeIn 0.3s ease;
   `;
-  
+
   // Create modal
-  const modal = document.createElement('div');
+  const modal = document.createElement("div");
   modal.style.cssText = `
     background-color: var(--bg-card);
     border-radius: 16px;
@@ -505,7 +529,7 @@ function showSuccessModal(totals, shippingName, paymentName) {
     animation: slideUp 0.3s ease;
     color: var(--text-primary);
   `;
-  
+
   modal.innerHTML = `
     <div class="success-modal-content">
   <!-- Animated success icon -->
@@ -541,30 +565,30 @@ function showSuccessModal(totals, shippingName, paymentName) {
   </button>
 </div>
   `;
-  
+
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
-  
+
   // Hover effect on button
-  const closeBtn = modal.querySelector('#closeSuccessModal');
-  closeBtn.addEventListener('mouseenter', () => {
-    closeBtn.style.transform = 'scale(1.05)';
+  const closeBtn = modal.querySelector("#closeSuccessModal");
+  closeBtn.addEventListener("mouseenter", () => {
+    closeBtn.style.transform = "scale(1.05)";
   });
-  closeBtn.addEventListener('mouseleave', () => {
-    closeBtn.style.transform = 'scale(1)';
+  closeBtn.addEventListener("mouseleave", () => {
+    closeBtn.style.transform = "scale(1)";
   });
-  
+
   // Close modal and redirect
-  closeBtn.addEventListener('click', () => {
+  closeBtn.addEventListener("click", () => {
     // Clear cart before redirecting
     cartProducts = [];
-    localStorage.removeItem('cart');
-    localStorage.removeItem('shippingData');
-    
-    overlay.style.animation = 'fadeIn 0.3s ease reverse';
+    localStorage.removeItem("cart");
+    localStorage.removeItem("shippingData");
+
+    overlay.style.animation = "fadeIn 0.3s ease reverse";
     setTimeout(() => {
       document.body.removeChild(overlay);
-      window.location.href = 'index.html';
+      window.location.href = "index.html";
     }, 300);
   });
 }
@@ -586,27 +610,27 @@ function backToCart() {
 // Function to go to payment form
 function goToPayment() {
   // Validate that fields are complete
-  const departamento = document.getElementById('departamento')?.value;
-  const localidad = document.getElementById('localidad')?.value;
-  const calle = document.getElementById('calle')?.value;
-  const numero = document.getElementById('numero')?.value;
-  const esquina = document.getElementById('esquina')?.value;
-  
+  const departamento = document.getElementById("departamento")?.value;
+  const localidad = document.getElementById("localidad")?.value;
+  const calle = document.getElementById("calle")?.value;
+  const numero = document.getElementById("numero")?.value;
+  const esquina = document.getElementById("esquina")?.value;
+
   if (!departamento || !localidad || !calle || !numero || !esquina) {
-    alert('Por favor completa todos los campos de dirección');
+    alert("Por favor completa todos los campos de dirección");
     return;
   }
-  
+
   // Save shipping data
   const shippingData = {
     departamento,
     localidad,
     calle,
     numero,
-    esquina
+    esquina,
   };
-  localStorage.setItem('shippingData', JSON.stringify(shippingData));
-  
+  localStorage.setItem("shippingData", JSON.stringify(shippingData));
+
   goToStep(3);
 }
 
@@ -620,13 +644,13 @@ function showCart() {
   }
 
   let total = 0;
-  
+
   // Create container for steps
   let html = `
     <!-- STEP 1: CART -->
     <div id="step1" style="display: flex; flex-direction: column; width: 100%; gap: 16px;">
   `;
-  
+
   // Build HTML for all products
   cartProducts.forEach((product, index) => {
     const subtotal = product.cost * product.count;
@@ -634,10 +658,14 @@ function showCart() {
     html += `
       <div class="cart-item">
         <button class="delete-btn" onclick="removeItem(${index})">Eliminar</button>
-        <img src="${product.image}" alt="${product.name}" class="item-image" onerror="this.src='img/prod1.jpg'">
+        <img src="${product.image}" alt="${
+      product.name
+    }" class="item-image" onerror="this.src='img/prod1.jpg'">
         <div class="item-details">
           <div class="item-name">${product.name}</div>
-          <div class="item-price">${product.currency} ${product.cost.toFixed(2)}</div>
+          <div class="item-price">${product.currency} ${product.cost.toFixed(
+      2
+    )}</div>
           
           <div class="quantity-controls">
             <span class="quantity-label">Cantidad:</span>
@@ -648,13 +676,15 @@ function showCart() {
           
           <div class="item-subtotal">
             <span class="subtotal-label">Subtotal:</span>
-            <span class="subtotal-price">${product.currency} ${subtotal.toFixed(2)}</span>
+            <span class="subtotal-price">${product.currency} ${subtotal.toFixed(
+      2
+    )}</span>
           </div>
         </div>
       </div>
     `;
   });
-  
+
   // Total and buttons for step 1
   html += `
       <div class="cartTotal">
@@ -673,7 +703,7 @@ function showCart() {
       </div>
     </div>
     
-   <!-- STEP 2: SHIPPING ADDRESS -->
+ <!-- STEP 2: SHIPPING ADDRESS -->
 <div id="step2" class="step2">
   <div class="shipping-card">
     <div class="shipping-form">
@@ -746,20 +776,20 @@ function showCart() {
   <div class="payment-container">
     <div class="payment-form">
       
-      <!-- Payment Methods -->
+      <!-- Payment Methods (CHECKBOXES para múltiples selecciones) -->
       <div class="payment-methods-card">
         <label class="radio-label">
-          <input type="radio" name="paymentType" value="credito" class="radio-input" onchange="handlePaymentTypeChange('credito')">
+          <input type="checkbox" name="paymentType" value="credito" class="radio-input" onchange="handlePaymentTypeChange('credito', this.checked)">
           <span class="radio-text">Tarjeta de Crédito</span>
         </label>
         
         <label class="radio-label">
-          <input type="radio" name="paymentType" value="debito" class="radio-input" onchange="handlePaymentTypeChange('debito')">
+          <input type="checkbox" name="paymentType" value="debito" class="radio-input" onchange="handlePaymentTypeChange('debito', this.checked)">
           <span class="radio-text">Tarjeta de Débito</span>
         </label>
         
         <label class="radio-label">
-          <input type="radio" name="paymentType" value="transferencia" class="radio-input" onchange="handlePaymentTypeChange('transferencia')">
+          <input type="checkbox" name="paymentType" value="transferencia" class="radio-input" onchange="handlePaymentTypeChange('transferencia', this.checked)">
           <span class="radio-text">Transferencia Bancaria</span>
         </label>
         
@@ -850,11 +880,11 @@ function showCart() {
   `;
 
   cartInfo.innerHTML = html;
-  
+
   // If generated HTML includes payment select, ensure listener to toggle fields
-  const dynamicPaymentSelect = document.getElementById('paymentMethod');
+  const dynamicPaymentSelect = document.getElementById("paymentMethod");
   if (dynamicPaymentSelect) {
-    dynamicPaymentSelect.addEventListener('change', showPaymentFields);
+    dynamicPaymentSelect.addEventListener("change", showPaymentFields);
     // Initialize field state according to current value
     showPaymentFields();
   }
@@ -865,24 +895,24 @@ function showCart() {
 
 // Function to show payment fields
 function showPaymentFields() {
-  const paymentSelect = document.getElementById('paymentMethod');
+  const paymentSelect = document.getElementById("paymentMethod");
   if (!paymentSelect) return;
 
-  const cardFields = document.getElementById('cardFields');
-  const transferFields = document.getElementById('transferFields');
-  
+  const cardFields = document.getElementById("cardFields");
+  const transferFields = document.getElementById("transferFields");
+
   if (!cardFields || !transferFields) return;
 
   // Hide all fields
-  cardFields.style.display = 'none';
-  transferFields.style.display = 'none';
+  cardFields.style.display = "none";
+  transferFields.style.display = "none";
 
   // Show fields according to selection
   const selectedValue = paymentSelect.value;
-  if (selectedValue === 'credito' || selectedValue === 'debito') {
-    cardFields.style.display = 'block';
-  } else if (selectedValue === 'transferencia') {
-    transferFields.style.display = 'block';
+  if (selectedValue === "credito" || selectedValue === "debito") {
+    cardFields.style.display = "block";
+  } else if (selectedValue === "transferencia") {
+    transferFields.style.display = "block";
   }
 }
 
@@ -890,13 +920,13 @@ function showPaymentFields() {
 function finalizePurchase() {
   // --- Previous validations ---
   const totals = calculateTotals();
-  
+
   // 1) Address: validate fields (if in DOM) or in localStorage
-  const deptEl = document.getElementById('departamento');
-  const locEl = document.getElementById('localidad');
-  const calleEl = document.getElementById('calle');
-  const numEl = document.getElementById('numero');
-  const esquinaEl = document.getElementById('esquina');
+  const deptEl = document.getElementById("departamento");
+  const locEl = document.getElementById("localidad");
+  const calleEl = document.getElementById("calle");
+  const numEl = document.getElementById("numero");
+  const esquinaEl = document.getElementById("esquina");
 
   let departamento = deptEl?.value?.trim();
   let localidad = locEl?.value?.trim();
@@ -906,7 +936,7 @@ function finalizePurchase() {
 
   if (!departamento || !localidad || !calle || !numero || !esquina) {
     // try to read shippingData from localStorage
-    const saved = localStorage.getItem('shippingData');
+    const saved = localStorage.getItem("shippingData");
     if (saved) {
       try {
         const sd = JSON.parse(saved);
@@ -922,81 +952,97 @@ function finalizePurchase() {
   }
 
   if (!departamento || !localidad || !calle || !numero || !esquina) {
-    alert('Por favor completa todos los campos de dirección antes de finalizar la compra.');
+    alert(
+      "Por favor completa todos los campos de dirección antes de finalizar la compra."
+    );
     return;
   }
 
   // 2) Shipping method: must be selected (select)
-  const shippingSelect = document.getElementById('shippingMethod');
+  const shippingSelect = document.getElementById("shippingMethod");
   if (!shippingSelect || !shippingSelect.value) {
-    alert('Por favor selecciona un tipo de envío');
+    alert("Por favor selecciona un tipo de envío");
     return;
   }
   const shippingType = shippingSelect.value;
 
   // 3) Quantities: each product must have count > 0
   if (!Array.isArray(cartProducts) || cartProducts.length === 0) {
-    alert('No hay productos en el carrito');
+    alert("No hay productos en el carrito");
     return;
   }
   for (const p of cartProducts) {
     const cnt = Number(p.count);
     if (!Number.isFinite(cnt) || cnt <= 0) {
-      alert('Asegúrate de que la cantidad de cada producto sea mayor a 0');
+      alert("Asegúrate de que la cantidad de cada producto sea mayor a 0");
       return;
     }
   }
 
   // 4) Payment type selected (radio)
-  const paymentRadio = document.querySelector('input[name="paymentType"]:checked');
+  const paymentRadio = document.querySelector(
+    'input[name="paymentType"]:checked'
+  );
   if (!paymentRadio) {
-    alert('Por favor selecciona un método de pago');
+    alert("Por favor selecciona un método de pago");
     return;
   }
   const paymentType = paymentRadio.value;
 
   // 5) Payment method fields cannot be empty
-  if (paymentType === 'credito' || paymentType === 'debito') {
-    const cardNumber = document.getElementById('cardNumber')?.value?.trim();
-    const cardExpiry = document.getElementById('cardExpiry')?.value?.trim();
-    const cardCVV = document.getElementById('cardCVV')?.value?.trim();
+  if (paymentType === "credito" || paymentType === "debito") {
+    const cardNumber = document.getElementById("cardNumber")?.value?.trim();
+    const cardExpiry = document.getElementById("cardExpiry")?.value?.trim();
+    const cardCVV = document.getElementById("cardCVV")?.value?.trim();
 
     if (!cardNumber || !cardExpiry || !cardCVV) {
-      alert('Por favor completa todos los campos de la tarjeta');
+      alert("Por favor completa todos los campos de la tarjeta");
       return;
     }
     // Simple validations: expiry MM/YY and numeric CVV
     if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
-      alert('Formato de fecha de vencimiento inválido. Use MM/YY');
+      alert("Formato de fecha de vencimiento inválido. Use MM/YY");
       return;
     }
     if (!/^\d{3,4}$/.test(cardCVV)) {
-      alert('CVV inválido');
+      alert("CVV inválido");
       return;
     }
-  } else if (paymentType === 'transferencia') {
-    const account = document.getElementById('accountNumber')?.value?.trim();
+  } else if (paymentType === "transferencia") {
+    const account = document.getElementById("accountNumber")?.value?.trim();
     if (!account) {
-      alert('Por favor ingresa el número de cuenta para la transferencia');
+      alert("Por favor ingresa el número de cuenta para la transferencia");
       return;
     }
   }
 
   // Readable names
-  let shippingName = '';
+  let shippingName = "";
   switch (shippingType) {
-    case 'premium': shippingName = 'Premium 2 a 5 días'; break;
-    case 'express': shippingName = 'Express 5 a 8 días'; break;
-    case 'standard': shippingName = 'Standard 12 a 15 días'; break;
+    case "premium":
+      shippingName = "Premium 2 a 5 días";
+      break;
+    case "express":
+      shippingName = "Express 5 a 8 días";
+      break;
+    case "standard":
+      shippingName = "Standard 12 a 15 días";
+      break;
   }
 
-  let paymentName = '';
+  let paymentName = "";
   switch (paymentType) {
-    case 'credito': paymentName = 'Tarjeta de Crédito'; break;
-    case 'debito': paymentName = 'Tarjeta de Débito'; break;
-    case 'transferencia': paymentName = 'Transferencia Bancaria'; break;
+    case "credito":
+      paymentName = "Tarjeta de Crédito";
+      break;
+    case "debito":
+      paymentName = "Tarjeta de Débito";
+      break;
+    case "transferencia":
+      paymentName = "Transferencia Bancaria";
+      break;
   }
-  
+
   // Show success modal
   showSuccessModal(totals, shippingName, paymentName);
 }

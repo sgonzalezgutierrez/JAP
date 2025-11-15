@@ -48,16 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
     </nav>
   `;
 
-  
-document.getElementById('logoutBtn').addEventListener('click', function () {
-  localStorage.removeItem('loggedIn');
-  localStorage.removeItem('username');
-  window.location.assign('login.html');
-});
-document.getElementById('myProfile').addEventListener('click', function () {
-   window.location.href = "my-profile.html";
-});
-contarProdcuts();
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("username");
+    window.location.assign("login.html");
+  });
+  document.getElementById("myProfile").addEventListener("click", function () {
+    window.location.href = "my-profile.html";
+  });
+  contarProdcuts();
 });
 
 function contarProdcuts() {
@@ -70,7 +69,7 @@ function contarProdcuts() {
   if (numero > 0) {
     span.innerHTML = numero;
     span.style.display = "block";
-  }else{
+  } else {
     span.style.display = "none";
   }
 }

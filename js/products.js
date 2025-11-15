@@ -7,8 +7,8 @@ let currentProducts = [];
 // Funciones de filtro
 // Que por buena practica no modifiquen el nuevo arreglo
 // Filtra de forma descendiente
-function sortProductsDesc(dataArray){
-    dataArray.sort((a,b) => a.cost - b.cost)
+function sortProductsDesc(dataArray) {
+  dataArray.sort((a, b) => a.cost - b.cost);
 }
 
 // Este codigp se usa para acortar la lista de prodcutos.
@@ -23,10 +23,12 @@ function sortProductsSell(dataArray) {
 //Filtra segun el precio que se coloco en los filtros, revisando si tiene valores
 function filterProductsByPrice(dataArray) {
   const min = parseInt(document.getElementById("minPrice").value) || 0;
-  let val = parseInt(document.getElementById("maxPrice").value) ;
-  const max = (!isNaN(val)) ? val : Infinity;
+  let val = parseInt(document.getElementById("maxPrice").value);
+  const max = !isNaN(val) ? val : Infinity;
 
-   return dataArray.filter(product => product.cost >= min && product.cost <= max);
+  return dataArray.filter(
+    (product) => product.cost >= min && product.cost <= max
+  );
 }
 
 // Filtra segun el titulo y descripcion
@@ -42,13 +44,10 @@ function filterProductsByTitleandDescription(str) {
   return filteredProducts;
 }
 
-function savedFilters(text){
-  let arrayFiltered = filterProductsByTitleandDescription(
-    text
-  );
+function savedFilters(text) {
+  let arrayFiltered = filterProductsByTitleandDescription(text);
   return filterProductsByPrice(arrayFiltered);
 }
-  
 
 // Creando la lista por DOM.
 // Muestra el titulo de los objetos en la lista.
@@ -101,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (resultObj.status === "ok") {
       currentProducts = resultObj.data.products;
       showTitle(resultObj.data.catName);
-        sortProductsDesc(currentProducts);
+      sortProductsDesc(currentProducts);
       let arrayToShow = filterProductsByPrice(currentProducts);
       showProducts(arrayToShow);
     }
