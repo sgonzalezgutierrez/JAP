@@ -1,10 +1,11 @@
-const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
-const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
-const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
-const PRODUCT_INFO_URL = "https://japceibal.github.io/emercado-api/products/";
-const PRODUCT_INFO_COMMENTS_URL = "https://japceibal.github.io/emercado-api/products_comments/";
-const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
-const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
+const API_URL = "https://japceibal.github.io/emercado-api";
+const CATEGORIES_URL = ` ${API_URL}/cats/cat.json`;
+const PUBLISH_PRODUCT_URL = `${API_URL}/sell/publish.json`;
+const PRODUCTS_URL = `${API_URL}/cats_products/`;
+const PRODUCT_INFO_URL = `${API_URL}/products/`;
+const PRODUCT_INFO_COMMENTS_URL = `${API_URL}/products_comments/`;
+const CART_INFO_URL = `${API_URL}/user_cart/`;
+const CART_BUY_URL = `${API_URL}/cart/buy.json`;
 const EXT_TYPE = ".json";
 
 let showSpinner = function(){
@@ -42,5 +43,12 @@ let getJSONData = function(url){
 
 if (localStorage.getItem('loggedIn') !== 'true') {
   window.location.assign('login.html');
+}
+
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    }
 }
 
