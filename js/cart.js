@@ -2,13 +2,6 @@
 let cartProducts = [];
 let currentStep = 1; // Variable to control current step
 
-function loadSavedTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-mode');
-    }
-}
-
 document.addEventListener("DOMContentLoaded", function (e) {
   loadSavedTheme();
   // Get products from localStorage and parse JSON
@@ -43,10 +36,10 @@ function showEmptyCart() {
   const cartInfo = document.querySelector(".cart");
   if (cartInfo) {
     cartInfo.innerHTML = `
-      <div style="text-align:center; padding:40px; color:var(--text-primary);">
+      <div class="cartDiv">
         <h3>Tu carrito está vacío</h3>
-        <p style="margin:20px 0; color:var(--text-secondary);">¡Comienza a agregar productos!</p>
-        <button style="background-color:#0098A6; border:none; border-radius:8px; padding:12px 24px; color:white; font-weight:bold; cursor:pointer;" onclick="continueShopping()">
+        <p class="cartTitle">¡Comienza a agregar productos!</p>
+        <button class="cartButton" onclick="continueShopping()">
           Ver productos
         </button>
       </div>
@@ -514,61 +507,39 @@ function showSuccessModal(totals, shippingName, paymentName) {
   `;
   
   modal.innerHTML = `
-    <style>
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      @keyframes slideUp {
-        from { 
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to { 
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes checkmark {
-        0% { transform: scale(0) rotate(45deg); }
-        50% { transform: scale(1.2) rotate(45deg); }
-        100% { transform: scale(1) rotate(45deg); }
-      }
-    </style>
-    
-    <div style="text-align: center;">
-      <!-- Animated success icon -->
-      <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #10b981; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;">
-        <div style="width: 30px; height: 50px; border-right: 4px solid white; border-bottom: 4px solid white; transform: rotate(45deg); animation: checkmark 0.5s ease 0.3s both;"></div>
-      </div>
-      
-      <h2 style="margin: 0 0 16px 0; color: var(--text-primary); font-size: 28px;">¡Compra Exitosa!</h2>
-      <p style="margin: 0 0 24px 0; color: var(--text-secondary); font-size: 16px;">Tu pedido ha sido procesado correctamente</p>
-      
-      <!-- Purchase details -->
-      <div style="background-color: var(--bg-primary); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: left;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-          <span style="color: var(--text-secondary);">Subtotal:</span>
-          <span style="font-weight: bold;">USD ${totals.subtotal.toFixed(2)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-          <span style="color: var(--text-secondary);">Envío (${shippingName}):</span>
-          <span style="font-weight: bold;">USD ${totals.shippingCost.toFixed(2)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-          <span style="color: var(--text-secondary);">Método de pago:</span>
-          <span style="font-weight: bold;">${paymentName}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 20px; color: #10b981;">
-          <span style="font-weight: bold;">Total:</span>
-          <span style="font-weight: bold;">USD ${totals.total.toFixed(2)}</span>
-        </div>
-      </div>
-      
-      <button id="closeSuccessModal" style="width: 100%; background: linear-gradient(135deg, #0098A6 0%, #00BCD4 100%); border: none; border-radius: 12px; padding: 16px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; transition: transform 0.2s;">
-        Continuar comprando
-      </button>
+    <div class="success-modal-content">
+  <!-- Animated success icon -->
+  <div class="success-icon">
+    <div class="success-checkmark"></div>
+  </div>
+  
+  <h2 class="success-title">¡Compra Exitosa!</h2>
+  <p class="success-description">Tu pedido ha sido procesado correctamente</p>
+  
+  <!-- Purchase details -->
+  <div class="purchase-details">
+    <div class="detail-row">
+      <span class="detail-label">Subtotal:</span>
+      <span class="detail-value">USD ${totals.subtotal.toFixed(2)}</span>
     </div>
+    <div class="detail-row">
+      <span class="detail-label">Envío (${shippingName}):</span>
+      <span class="detail-value">USD ${totals.shippingCost.toFixed(2)}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Método de pago:</span>
+      <span class="detail-value">${paymentName}</span>
+    </div>
+    <div class="detail-row total-row">
+      <span class="detail-label">Total:</span>
+      <span class="detail-value">USD ${totals.total.toFixed(2)}</span>
+    </div>
+  </div>
+  
+  <button id="closeSuccessModal" class="continue-shopping-btn">
+    Continuar comprando
+  </button>
+</div>
   `;
   
   overlay.appendChild(modal);
@@ -686,189 +657,196 @@ function showCart() {
   
   // Total and buttons for step 1
   html += `
-      <div style="display:flex; flex-direction:column; background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:16px; width:100%; gap:12px; font-family:Arial, sans-serif; color:var(--text-primary);">
-        <div style="display:flex; justify-content:space-between; width:100%">
+      <div class="cartTotal">
+        <div class="subtotal">
           <h3>Total:</h3>
-          <h4 style="font-weight:bold;">USD ${total.toFixed(2)}</h4>
+          <h4 class="valueText">USD ${total.toFixed(2)}</h4>
         </div>
-        <div style="display:flex; gap:8px; width:100%">
-          <button style="width:100%; background-color:#3C747E; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:pointer;" onclick="continueShopping()">
+        <div class="continueShopping">
+          <button class="btnContinueShopping" onclick="continueShopping()">
             Continuar comprando
           </button>
-          <button style="width:100%; background-color:#0098A6; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:pointer;" onclick="goToShipping()">
+          <button class="btnDirection" onclick="goToShipping()">
             Dirección de envío
           </button>
         </div>
       </div>
     </div>
     
-    <!-- STEP 2: SHIPPING ADDRESS -->
-    <div id="step2" style="display: none; flex-direction: column; width: 100%; margin: 0 auto;">
-      <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:24px; color:var(--text-primary);">
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-weight:bold; color:var(--text-primary);">Departamento *</label>
-            <input id="departamento" type="text" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:12px; color:var(--input-text); font-size:14px;" placeholder="Ingrese departamento">
-            <div id="departamento-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px; align-items:center; gap:4px;">
-              <span>⚠️</span>
-              <span>Este campo es requerido</span>
-            </div>
-          </div>
-          
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-weight:bold; color:var(--text-primary);">Localidad *</label>
-            <input id="localidad" type="text" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:12px; color:var(--input-text); font-size:14px;" placeholder="Ingrese localidad">
-            <div id="localidad-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px; align-items:center; gap:4px;">
-              <span>⚠️</span>
-              <span>Este campo es requerido</span>
-            </div>
-          </div>
-          
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-weight:bold; color:var(--text-primary);">Calle *</label>
-            <input id="calle" type="text" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:12px; color:var(--input-text); font-size:14px;" placeholder="Ingrese calle">
-            <div id="calle-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px; align-items:center; gap:4px;">
-              <span>⚠️</span>
-              <span>Este campo es requerido</span>
-            </div>
-          </div>
-          
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-weight:bold; color:var(--text-primary);">Número *</label>
-            <input id="numero" type="text" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:12px; color:var(--input-text); font-size:14px;" placeholder="Ingrese número">
-            <div id="numero-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px; align-items:center; gap:4px;">
-              <span>⚠️</span>
-              <span>Este campo es requerido</span>
-            </div>
-          </div>
-          
-          <div style="display:flex; flex-direction:column; gap:4px;">
-            <label style="font-weight:bold; color:var(--text-primary);">Esquina *</label>
-            <input id="esquina" type="text" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:12px; color:var(--input-text); font-size:14px;" placeholder="Ingrese esquina">
-            <div id="esquina-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px; align-items:center; gap:4px;">
-              <span>⚠️</span>
-              <span>Este campo es requerido</span>
-            </div>
-          </div>
-          
-          <div style="display:flex; gap:8px; margin-top:16px;">
-            <button style="width:100%; background-color:#3C747E; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:pointer;" onclick="backToCart()">
-              Volver al Carrito
-            </button>
-            <button id="shippingNextBtn" disabled style="width:100%; background-color:#0098A6; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:not-allowed; opacity:0.5;" onclick="goToPayment()">
-              Formas de Pago
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- STEP 3: SHIPPING TYPE AND PAYMENT METHOD -->
-    <div id="step3" style="display: none; flex-direction: column; width: 100%; margin: 0 auto;">
-      <div style="color:var(--text-primary);">
-        
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          
-          <!-- Payment method options (Radio buttons) -->
-          <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:20px;">
-              <label style="display:flex; align-items:center; gap:12px; margin-bottom:16px; cursor:pointer;">
-                <input type="radio" name="paymentType" value="credito" onchange="handlePaymentTypeChange('credito')" style="width:18px; height:18px; cursor:pointer;">
-                <span style="font-size:16px;">Tarjeta de Crédito</span>
-              </label>
-              
-              <label style="display:flex; align-items:center; gap:12px; margin-bottom:16px; cursor:pointer;">
-                <input type="radio" name="paymentType" value="debito" onchange="handlePaymentTypeChange('debito')" style="width:18px; height:18px; cursor:pointer;">
-                <span style="font-size:16px;">Tarjeta de Débito</span>
-              </label>
-              
-              <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
-                <input type="radio" name="paymentType" value="transferencia" onchange="handlePaymentTypeChange('transferencia')" style="width:18px; height:18px; cursor:pointer;">
-                <span style="font-size:16px;">Transferencia Bancaria</span>
-              </label>
+   <!-- STEP 2: SHIPPING ADDRESS -->
+<div id="step2" class="step2">
+  <div class="shipping-card">
+    <div class="shipping-form">
       
-            
-            <!-- Shipping Type (Select) -->
-         <div style="display:flex; flex-direction:column; gap:8px; position:relative; margin-top:16px;">
+      <!-- Departamento -->
+      <div class="form-group">
+        <label class="form-label">Departamento *</label>
+        <input id="departamento" type="text" class="form-input" placeholder="Ingrese departamento">
+        <div id="departamento-error" class="error-message">
+          <span>⚠️</span>
+          <span>Este campo es requerido</span>
+        </div>
+      </div>
+      
+      <!-- Localidad -->
+      <div class="form-group">
+        <label class="form-label">Localidad *</label>
+        <input id="localidad" type="text" class="form-input" placeholder="Ingrese localidad">
+        <div id="localidad-error" class="error-message">
+          <span>⚠️</span>
+          <span>Este campo es requerido</span>
+        </div>
+      </div>
+      
+      <!-- Calle -->
+      <div class="form-group">
+        <label class="form-label">Calle *</label>
+        <input id="calle" type="text" class="form-input" placeholder="Ingrese calle">
+        <div id="calle-error" class="error-message">
+          <span>⚠️</span>
+          <span>Este campo es requerido</span>
+        </div>
+      </div>
+      
+      <!-- Número -->
+      <div class="form-group">
+        <label class="form-label">Número *</label>
+        <input id="numero" type="text" class="form-input" placeholder="Ingrese número">
+        <div id="numero-error" class="error-message">
+          <span>⚠️</span>
+          <span>Este campo es requerido</span>
+        </div>
+      </div>
+      
+      <!-- Esquina -->
+      <div class="form-group">
+        <label class="form-label">Esquina *</label>
+        <input id="esquina" type="text" class="form-input" placeholder="Ingrese esquina">
+        <div id="esquina-error" class="error-message">
+          <span>⚠️</span>
+          <span>Este campo es requerido</span>
+        </div>
+      </div>
+      
+      <!-- Botones -->
+      <div class="button-group">
+        <button class="btn-back" onclick="backToCart()">
+          Volver al Carrito
+        </button>
+        <button id="shippingNextBtn" class="btn-next" disabled onclick="goToPayment()">
+          Formas de Pago
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-            
-            <!-- Dynamic payment fields (hidden by default) -->
-            <div id="cardFields" class="payment-fields" style="display:none; margin-top:12px;">
-              <div class="form-field" style="margin-bottom:12px;">
-                <label class="field-label" style="font-weight:bold; color:var(--text-primary); font-size:14px; display:block; margin-bottom:4px;">Número de Tarjeta *</label>
-                <input id="cardNumber" type="text" maxlength="19" class="field-input" placeholder="1234 5678 9012 3456" style="width:100%; background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
-                <div id="cardNumber-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px;">
-                  <span>⚠️</span>
-                  <span>El número de tarjeta es requerido</span>
-                </div>
-              </div>
-              <div class="field-row" style="display:flex; gap:12px;">
-                <div class="form-field" style="flex:1;">
-                  <label class="field-label" style="font-weight:bold; color:var(--text-primary); font-size:14px; display:block; margin-bottom:4px;">Fecha de Vencimiento *</label>
-                  <input id="cardExpiry" type="text" maxlength="5" class="field-input" placeholder="MM/YY" style="width:100%; background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
-                  <div id="cardExpiry-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px;">
-                    <span>⚠️</span>
-                    <span>Fecha requerida</span>
-                  </div>
-                </div>
-                <div class="form-field" style="width:120px;">
-                  <label class="field-label" style="font-weight:bold; color:var(--text-primary); font-size:14px; display:block; margin-bottom:4px;">CVV *</label>
-                  <input id="cardCVV" type="text" maxlength="4" class="field-input" placeholder="123" style="width:100%; background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
-                  <div id="cardCVV-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px;">
-                    <span>⚠️</span>
-                    <span>CVV requerido</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="transferFields" class="payment-fields" style="display:none; margin-top:12px;">
-              <div class="form-field">
-                <label class="field-label" style="font-weight:bold; color:var(--text-primary); font-size:14px; display:block; margin-bottom:4px;">Número de Cuenta *</label>
-                <input id="accountNumber" type="text" class="field-input" placeholder="Ingrese número de cuenta" style="width:100%; background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:10px; color:var(--input-text);">
-                <div id="accountNumber-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:4px;">
-                  <span>⚠️</span>
-                  <span>El número de cuenta es requerido</span>
-                </div>
-              </div>
-            </div>
-
-            <label style="font-weight:bold; color:var(--text-primary); font-size:14px;">Tipo de Envío: *</label>
-            <select id="shippingMethod" onchange="handleShippingChange()" style="background-color:var(--input-bg); border:1px solid var(--input-border); border-radius:8px; padding:12px 40px 12px 12px; color:var(--input-text); font-size:14px; cursor:pointer; appearance:none; -webkit-appearance:none; -moz-appearance:none; background-image:url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23666%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E'); background-repeat:no-repeat; background-position:right 12px center; background-size:20px;">
-              <option value="">Seleccione tipo de envío</option>
-              <option value="standard">Standard 12 a 15 días (5%)</option>
-              <option value="express">Express 5 a 8 días (7%)</option>
-              <option value="premium">Premium 2 a 5 días (15%)</option>
-            </select>
-          </div>
-
-          </div>
-          <!-- Cost summary -->
-          <div style="background-color:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:16px; margin-top:8px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:16px;">
-              <span>Subtotal:</span>
-              <span id="summarySubtotal">USD 0.00</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:16px;">
-              <span>Costo de Envío:</span>
-              <span id="summaryCost">USD 0.00</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20px; border-top:1px solid var(--border-color); padding-top:12px; color:var(--text-primary);">
-              <span>Total:</span>
-              <span id="summaryTotal">USD 0.00</span>
+<!-- STEP 3: SHIPPING TYPE AND PAYMENT METHOD -->
+<div id="step3">
+  <div class="payment-container">
+    <div class="payment-form">
+      
+      <!-- Payment Methods -->
+      <div class="payment-methods-card">
+        <label class="radio-label">
+          <input type="radio" name="paymentType" value="credito" class="radio-input" onchange="handlePaymentTypeChange('credito')">
+          <span class="radio-text">Tarjeta de Crédito</span>
+        </label>
+        
+        <label class="radio-label">
+          <input type="radio" name="paymentType" value="debito" class="radio-input" onchange="handlePaymentTypeChange('debito')">
+          <span class="radio-text">Tarjeta de Débito</span>
+        </label>
+        
+        <label class="radio-label">
+          <input type="radio" name="paymentType" value="transferencia" class="radio-input" onchange="handlePaymentTypeChange('transferencia')">
+          <span class="radio-text">Transferencia Bancaria</span>
+        </label>
+        
+        <!-- Card Fields (hidden by default) -->
+        <div id="cardFields" class="payment-fields">
+          <div class="field-group">
+            <label class="field-label">Número de Tarjeta *</label>
+            <input id="cardNumber" type="text" maxlength="19" class="field-input" placeholder="1234 5678 9012 3456">
+            <div id="cardNumber-error" class="field-error">
+              <span>⚠️</span>
+              <span>El número de tarjeta es requerido</span>
             </div>
           </div>
           
-          <!-- Action buttons -->
-          <div style="display:flex; gap:8px; margin-top:16px;">
-            <button style="width:100%; background-color:#3C747E; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:pointer;" onclick="goToStep(2)">
-              Volver
-            </button>
-            <button id="finalizeBtn" disabled style="width:100%; background-color:#0098A6; border:none; border-radius:8px; padding:12px 8px; color:white; font-weight:bold; cursor:not-allowed; opacity:0.5;" onclick="finalizePurchase()">
-              Finalizar compra
-            </button>
+          <div class="fields-row">
+            <div class="field-group">
+              <label class="field-label">Fecha de Vencimiento *</label>
+              <input id="cardExpiry" type="text" maxlength="5" class="field-input" placeholder="MM/YY">
+              <div id="cardExpiry-error" class="field-error">
+                <span>⚠️</span>
+                <span>Fecha requerida</span>
+              </div>
+            </div>
+            
+            <div class="field-group">
+              <label class="field-label">CVV *</label>
+              <input id="cardCVV" type="text" maxlength="4" class="field-input" placeholder="123">
+              <div id="cardCVV-error" class="field-error">
+                <span>⚠️</span>
+                <span>CVV requerido</span>
+              </div>
+            </div>
           </div>
         </div>
+        
+        <!-- Transfer Fields (hidden by default) -->
+        <div id="transferFields" class="payment-fields">
+          <div class="field-group">
+            <label class="field-label">Número de Cuenta *</label>
+            <input id="accountNumber" type="text" class="field-input" placeholder="Ingrese número de cuenta">
+            <div id="accountNumber-error" class="field-error">
+              <span>⚠️</span>
+              <span>El número de cuenta es requerido</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Shipping Select -->
+        <div class="shipping-select-wrapper">
+          <label class="form-label">Tipo de Envío: *</label>
+          <select id="shippingMethod" class="shipping-select" onchange="handleShippingChange()">
+            <option value="">Seleccione tipo de envío</option>
+            <option value="standard">Standard 12 a 15 días (5%)</option>
+            <option value="express">Express 5 a 8 días (7%)</option>
+            <option value="premium">Premium 2 a 5 días (15%)</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Cost Summary -->
+      <div class="summary-card">
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span id="summarySubtotal">USD 0.00</span>
+        </div>
+        <div class="summary-row">
+          <span>Costo de Envío:</span>
+          <span id="summaryCost">USD 0.00</span>
+        </div>
+        <div class="summary-total">
+          <span>Total:</span>
+          <span id="summaryTotal">USD 0.00</span>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="button-group">
+        <button class="btn-back" onclick="goToStep(2)">
+          Volver
+        </button>
+        <button id="finalizeBtn" class="btn-next" disabled onclick="finalizePurchase()">
+          Finalizar compra
+        </button>
       </div>
     </div>
+  </div>
+</div>
   `;
 
   cartInfo.innerHTML = html;

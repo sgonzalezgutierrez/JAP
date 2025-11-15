@@ -7,14 +7,6 @@ function toggleTheme() {
   localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
 }
 
-// Función para cargar el tema guardado
-function loadSavedTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light') {
-    document.body.classList.add('light-mode');
-  }
-}
-
 // Función para comprimir imagen
 function compressImage(file, callback) {
     const reader = new FileReader();
