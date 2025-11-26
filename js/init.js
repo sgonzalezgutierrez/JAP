@@ -1,5 +1,5 @@
-const API_URL = "https://japceibal.github.io/emercado-api";
-const CATEGORIES_URL = ` ${API_URL}/cats/cat.json`;
+const API_URL = "http://localhost:3000";
+const CATEGORIES_URL = ` ${API_URL}/cat`;
 const PUBLISH_PRODUCT_URL = `${API_URL}/sell/publish.json`;
 const PRODUCTS_URL = `${API_URL}/cats_products/`;
 const PRODUCT_INFO_URL = `${API_URL}/products/`;
