@@ -39,8 +39,8 @@ function agregarAlCarrito(producto) {
 
 // ==================== PRODUCT DATA ====================
 const selectedProductId = localStorage.getItem("productoSeleccionado");
-const productUrl = `https://japceibal.github.io/emercado-api/products/${selectedProductId}.json`;
-const commentsUrl = `https://japceibal.github.io/emercado-api/products_comments/${selectedProductId}.json`;
+const productUrl =  `http://localhost:3000/products/${selectedProductId}`; 
+const commentsUrl = `http://localhost:3000/api/products-comments/${selectedProductId}`; 
 
 let productData; // ← VARIABLE GLOBAL PARA EL PRODUCTO
 
