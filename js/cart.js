@@ -1043,6 +1043,30 @@ function finalizePurchase() {
       break;
   }
 
-  // Show success modal
-  showSuccessModal(totals, shippingName, paymentName);
+async function sendCartToBackend() {
+  try {
+    const usuarioId = 1;
+
+    const items = cartProducts.map(item => ({
+      productoId: item.id || item.productId || item.productoId,
+      cantidad: item.count
+    }));
+
+    const response = await fetch("http://localhost:3000/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usuarioId, items })
+    });
+
+    const data = await response.json();
+    console.log("Respuesta del backend:", data);
+
+    return data;
+  } catch (err) {
+    console.error("Error enviando carrito al backend:", err);
+    return null;
+  }
+}
+sendCartToBackend();
+showSuccessModal(totals, shippingName, paymentName);
 }

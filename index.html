@@ -20,6 +20,9 @@
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY2BL8CJJfz_WkXuKwt7FNSoafso4_-YsD6w&s">
         <h3>Este sitio posee un proposito meramente educativo. No realiza compras o ventas reales a terceros, ni aministra datos entregados por los clientes. No existe validez comercial ni presenta un peligro para sus usuarios.</h3>
       </div>
+      <button id="btnEnviarCarrito" class="btn btn-primary m-3">
+      Enviar carrito al backend (prueba)
+      </button>
       <div class="album py-5 background">
       <div class="container">
         <div class="row">
@@ -72,6 +75,34 @@
   <script src="js/index.js"></script>
   <script src="js/init.js"></script>
   <script src="js/nav.js"></script>
+  <script>
+  document.getElementById("btnEnviarCarrito").addEventListener("click", async () => {
+    const carrito = {
+      usuarioId: 1,
+      items: [
+        { productoId: 2, cantidad: 1 },
+        { productoId: 5, cantidad: 3 }
+      ]
+    };
+
+    try {
+      const respuesta = await fetch("http://localhost:3000/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(carrito)
+      });
+
+      const data = await respuesta.json();
+      console.log("Respuesta del backend:", data);
+
+      alert("Resultado del backend:\n" + JSON.stringify(data, null, 2));
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("No se pudo enviar el carrito");
+    }
+  });
+</script>
 
 </body>
 
